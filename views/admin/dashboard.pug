@@ -1,0 +1,54 @@
+include ../includes/admin/admin-head.pug
+
+.container-scroller
+  include ../includes/admin/admin-navbar-up.pug
+  .container-fluid.page-body-wrapper
+    include ../includes/admin/admin-navbar-side.pug
+    .main-panel
+      .content-wrapper
+        .row
+          .col-md-12.grid-margin
+            .row
+              .col-12.col-xl-8.mb-4.mb-xl-0
+                h3.font-weight-bold Welcome Andrei
+        .row
+          .col-md-6.grid-margin.stretch-card
+            .card.tale-bg
+              .card-people.mt-auto
+                img(src='/images/dashboard/people.svg' alt='people')
+                .weather-info
+                  .d-flex
+                    div
+                      h2.mb-0.font-weight-normal
+                        i.icon-sun.mr-2
+                        | 31
+                        sup C
+                    .ml-2
+                      h4.location.font-weight-normal Metro
+                      h6.font-weight-normal Manila
+          .col-md-6.grid-margin.transparent
+            .row
+              .col-md-6.mb-4.stretch-card.transparent
+                .card.card-tale
+                  .card-body
+                    p.mb-4 Registered Users
+                    p.fs-30.mb-2 4
+              .col-md-6.mb-4.stretch-card.transparent
+                .card.card-dark-blue
+                  .card-body
+                    p.mb-4 Total Services
+                    p.fs-30.mb-2 10
+            .row
+              .col-md-6.mb-4.mb-lg-0.stretch-card.transparent
+                .card.card-light-blue
+                  .card-body
+                    p.mb-4 Inquiries 
+                    p.fs-30.mb-2 10
+              .col-md-6.stretch-card.transparent
+                .card.card-light-danger
+                  .card-body
+                    p.mb-4 Issues
+                    p.fs-30.mb-2 4
+
+ 
+include ../includes/admin/admin-scripts.pug

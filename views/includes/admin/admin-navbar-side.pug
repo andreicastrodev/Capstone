@@ -1,0 +1,74 @@
+nav#sidebar.sidebar.sidebar-offcanvas
+      ul.nav
+        li.nav-item
+          a.nav-link(href='/admin/dashboard')
+            i.icon-grid.menu-icon
+            span.menu-title Dashboard
+        li.nav-item
+          a.nav-link(data-toggle='collapse' href='#ui-basic' aria-expanded='false' aria-controls='ui-basic')
+            i.icon-layout.menu-icon
+            span.menu-title Users
+            i.menu-arrow
+          #ui-basic.collapse
+            ul.nav.flex-column.sub-menu
+              li.nav-item
+                a.nav-link(href='pages/ui-features/buttons.html') Manage Users
+
+        li.nav-item
+          a.nav-link(data-toggle='collapse' href='#form-elements' aria-expanded='false' aria-controls='form-elements')
+            i.icon-columns.menu-icon
+            span.menu-title Services
+            i.menu-arrow
+          #form-elements.collapse
+            ul.nav.flex-column.sub-menu
+              li.nav-item
+                a.nav-link(href='/admin/create-service') Add Services
+              li.nav-item
+                a.nav-link(href='pages/forms/basic_elements.html') Edit Services
+        li.nav-item
+          a.nav-link(data-toggle='collapse' href='#charts' aria-expanded='false' aria-controls='charts')
+            i.icon-bar-graph.menu-icon
+            span.menu-title Inquiries
+            i.menu-arrow
+          #charts.collapse
+            ul.nav.flex-column.sub-menu
+              li.nav-item
+                a.nav-link(href='pages/charts/chartjs.html') Manage Inquiries
+        li.nav-item
+          a.nav-link(data-toggle='collapse' href='#tables' aria-expanded='false' aria-controls='tables')
+            i.icon-grid-2.menu-icon
+            span.menu-title News
+            i.menu-arrow
+          #tables.collapse
+            ul.nav.flex-column.sub-menu
+              li.nav-item
+                a.nav-link(href='pages/tables/basic-table.html') Manage News
+        li.nav-item
+          a.nav-link(data-toggle='collapse' href='#icons' aria-expanded='false' aria-controls='icons')
+            i.icon-contract.menu-icon
+            span.menu-title Voting
+            i.menu-arrow
+          #icons.collapse
+            ul.nav.flex-column.sub-menu
+              li.nav-item
+                a.nav-link(href='pages/icons/mdi.html') Create Poll
+              li.nav-item
+                a.nav-link(href='pages/icons/mdi.html') Edit Poll                
+        li.nav-item
+          a.nav-link(data-toggle='collapse' href='#auth' aria-expanded='false' aria-controls='auth')
+            i.icon-head.menu-icon
+            span.menu-title Issues
+            i.menu-arrow
+          #auth.collapse
+            ul.nav.flex-column.sub-menu
+              li.nav-item
+                a.nav-link(href='pages/samples/login.html')  Manage Issues 
+        li.nav-item
+          a.nav-link(data-toggle='collapse' href='#error' aria-expanded='false' aria-controls='error')
+            i.icon-paper.menu-icon
+            span.menu-title Schedule
+            i.menu-arrow
+          #error.collapse
+            ul.nav.flex-column.sub-menu
+              li.nav-item
+                a.nav-link(href='pages/samples/error-404.html')  Manage Schedule 

@@ -1,0 +1,1 @@
+exports.modules =  MONGODB_URI ='mongodb+srv://andydev:123123dd@cluster0.jphuk.mongodb.net/capstone';
