@@ -1,0 +1,35 @@
+include ../../includes/admin/admin-head.pug
+
+.container-scroller
+  include ../../includes/admin/admin-navbar-up.pug
+  .container-fluid.page-body-wrapper
+    include ../../includes/admin/admin-navbar-side.pug
+    .main-panel
+      .content-wrapper
+        .row
+          .col-12.grid-margin.stretch-card
+            .card
+              .card-body
+                h4.card-title Edit Services
+                form.forms-sample(action="/admin/create-service/", method="POST", enctype="multipart/form-data")
+                  .form-group
+                    label(for='exampleInputName1') Title
+                    input#exampleInputName1.form-control(type='text' name="title" placeholder='title' value=service.title)
+                  .form-group
+                    label Upload Image
+                    input#image.file-upload-default(type='file')
+                    .input-group.col-xs-12
+                      input.form-control.file-upload-info(type='file' placeholder='Upload Image', name="image")
+                      span.input-group-append
+                        button.file-upload-browse.btn.btn-primary(type='button') Upload
+                  .form-group
+                    label(for='exampleInputCity1') Location
+                    input#exampleInputCity1.form-control(type='text', name="location", placeholder='Location' value=service.location)
+                  .form-group
+                    label(for='exampleTextarea1') Description
+                    textarea#exampleTextarea1.form-control(rows='4', name="description")= service.description
+                  button.btn.btn-primary.mr-2(type='submit') Submit
+
+
+ 
+include ../../includes/admin/admin-scripts.pug

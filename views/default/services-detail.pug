@@ -1,0 +1,55 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  link(href='https://fonts.googleapis.com/css?family=Lato:300,400,400i,700' rel='stylesheet')
+  link(rel='stylesheet' href='/css/style-1.css')
+  title=pageTitle
+include ../includes/navigation-bar.pug
+section.section-header
+  .header__hero
+    .header__hero-overlay &nbsp;
+    img.header__hero-img(src=`/${service.imageUrl}`)
+  .heading-box
+    h1.heading-primary
+      span=service.title
+    .heading-box__group
+      .heading-box__detail
+        svg.heading-box__icon
+          use(xlink:href='img/icons.svg#icon-clock')
+        span.heading-box__text Barangay 20
+      .heading-box__detail
+        svg.heading-box__icon
+          use(xlink:href='img/icons.svg#icon-map-pin')
+        span.heading-box__text= service.location
+
+section.section-description
+  .overview-box
+    div
+      .overview-box__group
+        h2.heading-secondary.ma-bt-lg Select your prefered date for your schedule!
+        .overview-box__detail
+          form(action="/")
+            label.overview-box__label Date
+            input(type="date", name="date")
+            input(type="hidden" value=`${service._id}`)
+            button.btn.btn--green.span-all-rows(type="submit") Schedule now!
+
+        .overview-box__detail
+          svg.overview-box__icon
+            use(xlink:href='img/icons.svg#icon-trending-up')
+        //-   span.overview-box__label Difficulty
+        //-   span.overview-box__text Medium
+        .overview-box__detail
+          svg.overview-box__icon
+            use(xlink:href='img/icons.svg#icon-user')
+        //-   span.overview-box__label Participants
+        //-   span.overview-box__text 10 people
+        .overview-box__detail
+          svg.overview-box__icon
+            use(xlink:href='img/icons.svg#icon-star')
+        //-   span.overview-box__label Rating
+        //-   span.overview-box__text 4.9 / 5
+  .description-box
+    h2.heading-secondary.ma-bt-lg About the service
+    p.description__text= service.description

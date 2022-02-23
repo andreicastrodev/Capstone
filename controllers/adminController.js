@@ -13,6 +13,44 @@ exports.getCreateService = (req, res, next) => {
     })
 }
 
+exports.getManageService = async (req, res, next) => {
+    try {
+        const services = await Service.find();
+        console.log(services)
+
+        return res.render('admin/services/manage-service', {
+            pageTitle: 'Manage Service',
+            services,
+            path: '/'
+        })
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
+
+
+exports.getEditService = async (req, res, next) => {
+    const serveId = req.params.serviceId;
+    try {
+        const service = await Service.findById(serveId);
+        console.log(service)
+        return res.render('admin/services/edit-service', {
+            pageTitle: 'Edit Service',
+            service,
+            path: '/'
+        })
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+
+
+}
+
+
 
 exports.postCreateService = async (req, res, next) => {
     const title = req.body.title;
@@ -22,7 +60,7 @@ exports.postCreateService = async (req, res, next) => {
 
     console.log(image)
     if (!image) {
-       return res.redirect('/admin/dashboard');
+        return res.redirect('/admin/dashboard');
     }
     const imageUrl = image.path;
 

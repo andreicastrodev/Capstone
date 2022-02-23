@@ -1,0 +1,39 @@
+include ../../includes/admin/admin-head.pug
+
+.container-scroller
+  include ../../includes/admin/admin-navbar-up.pug
+  .container-fluid.page-body-wrapper
+    include ../../includes/admin/admin-navbar-side.pug
+    .main-panel
+      .content-wrapper
+        .row
+          .col-lg-12.grid-margin.stretch-card
+            .card
+              .card-body
+                h4.card-title Manage Services
+                .table-responsive
+                  each service in services
+                    table.table.table-striped
+                      thead
+                        tr
+                          th Service Name
+                          th Location
+                          th Action
+                        tbody
+                          tr
+                            td= service.title
+                                
+                            td= service.location
+                            
+                            td
+                              a(href=`/admin/edit-service/${service._id}`) 
+                                button.btn.btn-dark.btn-icon-text(type='button')
+                                    | Edit
+                                    i.ti-file.btn-icon-append
+
+
+
+
+
+ 
+include ../../includes/admin/admin-scripts.pug
