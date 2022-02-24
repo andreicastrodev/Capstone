@@ -45,10 +45,9 @@ body {
   list-style: none;
   text-decoration: none;
   color: black;
-  font-size: 1.5rem; }
+  font-size: 1.1rem; }
 
 .navbar {
-  margin: 1rem;
   background: #fff;
   padding: 0 50px;
   border-radius: 3px; }

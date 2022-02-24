@@ -1,4 +1,5 @@
 const Service = require('../models/service');
+const Inquiry = require('../models/inquiry');
 const mongoose = require('mongoose');
 
 exports.getIndex = (req, res, next) => {
@@ -13,7 +14,7 @@ exports.getServices = async (req, res, next) => {
         const services = await Service.find();
         console.log(services);
 
-        return res.render('default/services', {
+        return res.render('default/service/services', {
             pageTitle: 'Services',
             services,
             path: '/'
@@ -35,7 +36,7 @@ exports.getServicesDetail = async (req, res, next) => {
             return res.render('/');
         }
         console.log(service)
-        return res.render('default/services-detail', {
+        return res.render('default/service/services-detail', {
             pageTitle: 'Service Detail',
             service,
             path: "/"
@@ -47,4 +48,60 @@ exports.getServicesDetail = async (req, res, next) => {
         return next(err);
     }
 
+}
+
+exports.getInquiry = (req, res, next) => {
+    res.render('default/inquiry/inquiry', {
+        pageTitle: 'Inquiry',
+        path: '/'
+    })
+}
+
+exports.getProfile = (req, res, next) => {
+    res.render('default/profile/profile', {
+        pageTitle: 'Profile',
+        path: '/'
+    })
+}
+
+
+exports.getInquiryHistory = async (req, res, next) => {
+
+
+    try {
+        const inquiries = await Inquiry.find();
+        console.log(inquiries);
+
+        return res.render('default/profile/profile-inquiry-history', {
+            pageTitle: 'Inquiry History',
+            inquiries,
+            path: '/'
+        })
+
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
+
+exports.postInquiry = async (req, res, next) => {
+
+    const subject = req.body.subject;
+    const message = req.body.message;
+    const date = new Date().toDateString();
+    console.log(date)
+    const inquiry = new Inquiry({
+        subject,
+        message,
+        date
+    })
+    try {
+        await inquiry.save();
+        return res.redirect('/');
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
 }

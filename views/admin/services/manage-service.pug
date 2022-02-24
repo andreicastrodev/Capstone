@@ -26,6 +26,9 @@ include ../../includes/admin/admin-head.pug
                             td= service.location
                             
                             td
+                              form(action="/admin/delete-service",method="POST")
+                                input(type="hidden", value=`${service._id}`, name="serviceId")
+                                button.btn.btn-danger(type='submit') Delete 
                               a(href=`/admin/edit-service/${service._id}`) 
                                 button.btn.btn-dark.btn-icon-text(type='button')
                                     | Edit

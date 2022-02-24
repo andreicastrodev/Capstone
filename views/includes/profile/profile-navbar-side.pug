@@ -1,0 +1,42 @@
+nav#sidebar.sidebar.sidebar-offcanvas
+      ul.nav
+        li.nav-item
+          a.nav-link(href='/')
+            i.icon-grid.menu-icon
+            span.menu-title Home
+        li.nav-item
+          a.nav-link(data-toggle='collapse' href='#form-elements' aria-expanded='false' aria-controls='form-elements')
+            i.icon-columns.menu-icon
+            span.menu-title Services
+            i.menu-arrow
+          #form-elements.collapse
+            ul.nav.flex-column.sub-menu
+              li.nav-item
+                a.nav-link(href='/admin/manage-service') Service History
+        li.nav-item
+          a.nav-link(data-toggle='collapse' href='#charts' aria-expanded='false' aria-controls='charts')
+            i.icon-bar-graph.menu-icon
+            span.menu-title Inquiries
+            i.menu-arrow
+          #charts.collapse
+            ul.nav.flex-column.sub-menu
+              li.nav-item
+                a.nav-link(href='/profile/inquiry-history') Inquiry History
+        li.nav-item
+          a.nav-link(data-toggle='collapse' href='#icons' aria-expanded='false' aria-controls='icons')
+            i.icon-contract.menu-icon
+            span.menu-title Voting
+            i.menu-arrow
+          #icons.collapse
+            ul.nav.flex-column.sub-menu
+              li.nav-item
+                a.nav-link(href='pages/icons/mdi.html') Vote History          
+        li.nav-item
+          a.nav-link(data-toggle='collapse' href='#error' aria-expanded='false' aria-controls='error')
+            i.icon-paper.menu-icon
+            span.menu-title Schedule
+            i.menu-arrow
+          #error.collapse
+            ul.nav.flex-column.sub-menu
+              li.nav-item
+                a.nav-link(href='pages/samples/error-404.html')  View Schedule 

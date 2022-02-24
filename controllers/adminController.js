@@ -1,4 +1,5 @@
-const Service = require('../models/service')
+const Service = require('../models/service');
+const Inquiry = require('../models/inquiry');
 exports.getIndex = (req, res, next) => {
     res.render('admin/dashboard', {
         pageTitle: 'Admin',
@@ -46,7 +47,22 @@ exports.getEditService = async (req, res, next) => {
         err.httpStatusCode = 500;
         return next(err);
     }
+}
 
+
+exports.getManageInquiry = async (req, res, next) => {
+    try {
+        const inquiries = await Inquiry.find();
+        console.log(inquiries);
+        return res.render('admin/inquiry/manage-inquiry', {
+            pageTitle: 'Manage Inquiry',
+            inquiries,
+            path: '/'
+        })
+
+    } catch (error) {
+
+    }
 
 }
 
@@ -72,12 +88,71 @@ exports.postCreateService = async (req, res, next) => {
     })
     try {
         const result = await service.save()
-        console.log(result);
-        console.log('Service Created');
         return res.redirect('/admin/dashboard');
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
         return next(err);
     }
+}
+
+exports.postEditService = async (req, res, next) => {
+    const serveId = req.body.serveId;
+    const updatedTitle = req.body.title;
+    const updatedLocation = req.body.location;
+    const updatedDescription = req.body.description;
+    const image = req.file;
+    console.log(`this is the id ${serveId}`);
+
+    try {
+        const service = await Service.findById(serveId);
+        console.log('service')
+        service.title = updatedTitle;
+        service.location = updatedLocation;
+        service.description = updatedDescription;
+        if (image) {
+            service.imageUrl = image.path;
+        }
+        const result = await service.save();
+        console.log(`${result} service updated`);
+        return res.redirect('/admin/manage-service');
+
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+
+}
+
+
+exports.postDeleteService = async (req, res, next) => {
+
+    const serveId = req.body.serviceId;
+    try {
+        await Service.deleteOne({ _id: serveId });
+        console.log('SERVICE DELETED');
+        return res.redirect('/admin/manage-service')
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+
+}
+
+exports.postDeleteInquiry = async (req, res, next) => {
+
+    const inquiryId = req.body.inquiryId;
+
+    try {
+        await Inquiry.deleteOne({ _id: inquiryId });
+        console.log('INQUIRY DELETED');
+        return res.redirect('/admin/manage-inquiry');
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+
 }

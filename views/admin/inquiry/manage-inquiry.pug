@@ -1,0 +1,38 @@
+include ../../includes/admin/admin-head.pug
+
+.container-scroller
+  include ../../includes/admin/admin-navbar-up.pug
+  .container-fluid.page-body-wrapper
+    include ../../includes/admin/admin-navbar-side.pug
+    .main-panel
+      .content-wrapper
+        .row
+          .col-lg-12.grid-margin.stretch-card
+            .card
+              .card-body
+                h4.card-title Manage Inquiry
+                .table-responsive
+                  each inquiry in inquiries
+                    table.table.table-striped
+                      thead
+                        tr
+                          th Subject
+                          th Message
+                          th Date
+                          th Actions
+                        tbody
+                          tr
+                            td= inquiry.subject                               
+                            td= inquiry.message
+                            td= inquiry.date
+                            td
+                              form(action="/admin/delete-inquiry",method="POST")
+                                input(type="hidden", value=`${inquiry._id}`, name="inquiryId")
+                                button.btn.btn-danger(type='submit') Delete 
+
+
+
+
+
+ 
+include ../../includes/admin/admin-scripts.pug

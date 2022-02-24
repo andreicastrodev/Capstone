@@ -1,0 +1,34 @@
+include ../../includes/profile/profile-head.pug
+
+.container-scroller
+  include ../../includes/profile/profile-navbar-up.pug
+  .container-fluid.page-body-wrapper
+    include ../../includes/profile/profile-navbar-side.pug
+    .main-panel
+      .content-wrapper
+        .row
+          .col-lg-12.grid-margin.stretch-card
+            .card
+              .card-body
+                h4.card-title Inquiry History
+                .table-responsive
+                  each inquiry in inquiries
+                    table.table.table-striped
+                      thead
+                        tr
+                          th Subject
+                          th Message
+                          th Date
+                          th Admin action
+                        tbody
+                          tr
+                            td= inquiry.subject                               
+                            td= inquiry.message
+                            td= inquiry.date
+                            td pending
+            
+
+
+
+ 
+include ../../includes/admin/admin-scripts.pug

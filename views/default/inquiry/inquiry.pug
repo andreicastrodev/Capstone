@@ -1,0 +1,21 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  link(href='https://fonts.googleapis.com/css?family=Lato:300,300i,700' rel='stylesheet')
+  link(rel='stylesheet' href='css/style-1.css')
+  title= pageTitle
+  include ../../includes/navigation-bar.pug
+
+  main.main
+    .login-form
+      h2.heading-secondary.ma-bt-lg Submit an inquiry
+      form.form.form--login(action="/inquiry" method="POST")
+        .form__group
+          label.form__label Subject
+          input.form__input(type='text', name="subject", placeholder='ex barangay id')
+        .form__group.ma-bt-md
+          label.form__label Message
+          textarea(name="message", cols="50", rows="10") 
+        .form__group
+          button.btn.btn--green(type="submit") submit
