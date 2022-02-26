@@ -1,3 +1,4 @@
+block vars
 .wrapper
   .navbar.navbar_3
     .navbar_left
@@ -5,17 +6,25 @@
         a(href="/") 
           span Group 4
       ul(class="global menu")
-        li(class="global")
-          a(href='/services', class="global" ) Services
-        li(class="global") 
-          a(href='/inquiry' , class="global")  Inquiry
-        li(class="global") 
-          a(href='/profile' , class="global") Profile
+        if isAuth         
+          li(class="global")
+            a(href='/services', class="global" ) Services
+          li(class="global") 
+            a(href='/inquiry' , class="global")  Inquiry
+          li(class="global") 
+            a(href='/profile' , class="global") Profile
+        else 
+          li(class="global")
+            a(href='/services', class="global" ) Services
+
     .navbar_right
       ul(class="global")
-
-        li(class="global") 
-          a(href='#' , class="global") Sign Up
-
-        li(class="global") 
-          a(href='#' , class="global") Login
+        if isAuth
+          li(class="global") 
+            form(action="/logout", method="POST")
+              button(type="submit", class="btn btn--green btn--animated") Logout
+        else 
+          li(class="global") 
+            a(href='/sign-up' , class="global") Sign Up
+          li(class="global") 
+            a(href='/login' , class="global") Login

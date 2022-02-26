@@ -3,6 +3,8 @@ const express = require('express');
 const multer = require('multer');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
 const MONGODB_URI = 'mongodb+srv://andydev:123123dd@cluster0.jphuk.mongodb.net/capstone';
 const errorController = require('./controllers/errorController')
 
@@ -30,11 +32,15 @@ const fileFilter = (req, file, cb) => {
 
 //initialize as an express app
 const app = express();
+const store = new MongoDBStore({
+    uri: MONGODB_URI,
+    collection: 'sessions',
 
+});
 //routes
 const defaultRoutes = require('./routes/default');
 const adminRoutes = require('./routes/admin');
-
+const authRoutes = require('./routes/auth');
 // template engine
 app.set('view engine', 'pug');
 app.set('views', 'views');
@@ -44,23 +50,24 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //multer 
 app.use(
     multer({ storage: fileStorage }).single('image')
-  );
+);
 
 //exposes the public folder to the user
 app.use(express.static(path.join(__dirname, 'public')));
 //exposes the images folder to the user
 app.use('/images', express.static(path.join(__dirname, 'images')));
-
+//session middleware
+app.use(session({ secret: 'my long secret', resve: false, saveUninitialized: false, store: store }))
 //listen to routes
 app.use("/admin", adminRoutes);
 app.use(defaultRoutes);
-
+app.use(authRoutes);
 
 // error handling
 app.get('/500', errorController.get500);
 app.use((error, req, res, next) => {
-  console.log(error)
-  res.redirect('/500');
+    console.log(error)
+    res.redirect('/500');
 });
 
 // connect to mongodb

@@ -5,7 +5,8 @@ const mongoose = require('mongoose');
 exports.getIndex = (req, res, next) => {
     res.render('default/index', {
         pageTitle: 'Group 4',
-        path: '/'
+        path: '/',
+        isAuth:  req.session.isLoggedIn
     })
 }
 
@@ -17,7 +18,8 @@ exports.getServices = async (req, res, next) => {
         return res.render('default/service/services', {
             pageTitle: 'Services',
             services,
-            path: '/'
+            path: '/',
+            isAuth:  req.session.isLoggedIn
         })
     } catch (error) {
         const err = new Error(error);
@@ -39,7 +41,8 @@ exports.getServicesDetail = async (req, res, next) => {
         return res.render('default/service/services-detail', {
             pageTitle: 'Service Detail',
             service,
-            path: "/"
+            path: "/",
+            isAuth:  req.session.isLoggedIn
         })
 
     } catch (error) {
@@ -53,21 +56,21 @@ exports.getServicesDetail = async (req, res, next) => {
 exports.getInquiry = (req, res, next) => {
     res.render('default/inquiry/inquiry', {
         pageTitle: 'Inquiry',
-        path: '/'
+        path: '/',
+        isAuth:  req.session.isLoggedIn
     })
 }
 
 exports.getProfile = (req, res, next) => {
     res.render('default/profile/profile', {
         pageTitle: 'Profile',
-        path: '/'
+        path: '/',
+        isAuth:  req.session.isLoggedIn
     })
 }
 
 
 exports.getInquiryHistory = async (req, res, next) => {
-
-
     try {
         const inquiries = await Inquiry.find();
         console.log(inquiries);
@@ -75,7 +78,8 @@ exports.getInquiryHistory = async (req, res, next) => {
         return res.render('default/profile/profile-inquiry-history', {
             pageTitle: 'Inquiry History',
             inquiries,
-            path: '/'
+            path: '/',
+            isAuth:  req.session.isLoggedIn
         })
 
     } catch (error) {
