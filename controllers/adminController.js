@@ -1,5 +1,7 @@
 const Service = require('../models/service');
 const Inquiry = require('../models/inquiry');
+const Schedule = require('../models/schedule');
+const mongoose = require('mongoose');
 exports.getIndex = (req, res, next) => {
     res.render('admin/dashboard', {
         pageTitle: 'Admin',
@@ -52,18 +54,37 @@ exports.getEditService = async (req, res, next) => {
 
 exports.getManageInquiry = async (req, res, next) => {
     try {
-        const inquiries = await Inquiry.find();
+        const inquiries = await Inquiry.find().populate('userId')
         console.log(inquiries);
         return res.render('admin/inquiry/manage-inquiry', {
             pageTitle: 'Manage Inquiry',
             inquiries,
             path: '/'
         })
-
     } catch (error) {
 
     }
 
+}
+
+
+exports.getManageSchedule = async (req, res, next) => {
+
+    try {
+        const schedules = await Schedule.find().populate('serviceId').populate('userId');
+        console.log(schedules);
+
+        return res.render('admin/schedule/manage-schedule', {
+            pageTitle: 'Schedule History',
+            schedules,
+            path: '/',
+            isAuth: req.session.isLoggedIn
+        })
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
 }
 
 
@@ -142,11 +163,10 @@ exports.postDeleteService = async (req, res, next) => {
 }
 
 exports.postDeleteInquiry = async (req, res, next) => {
-
     const inquiryId = req.body.inquiryId;
-
     try {
         await Inquiry.deleteOne({ _id: inquiryId });
+        await req.user.removeInquiry(inquiryId);
         console.log('INQUIRY DELETED');
         return res.redirect('/admin/manage-inquiry');
     } catch (error) {
@@ -154,5 +174,20 @@ exports.postDeleteInquiry = async (req, res, next) => {
         err.httpStatusCode = 500;
         return next(err);
     }
+}
 
+exports.postReadInquiry = async (req, res, next) => {
+    const inquiryId = req.body.inquiryId;
+    try {
+        const inquiry = await Inquiry.findById(inquiryId);
+        inquiry.status = 'Read';
+        await inquiry.save();
+        console.log('INQUIRY READ');
+        return res.redirect('/admin/manage-inquiry');
+
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
 }

@@ -9,5 +9,7 @@ router.get('/services/:serviceId', defaultController.getServicesDetail);
 router.get('/inquiry', defaultController.getInquiry);
 router.get('/profile', defaultController.getProfile);
 router.get('/profile/inquiry-history', defaultController.getInquiryHistory)
+router.get('/profile/schedule-history', defaultController.getScheduleHistory);
 router.post('/inquiry', defaultController.postInquiry);
+router.post('/service-schedule', defaultController.postServiceSchedule);
 module.exports = router;

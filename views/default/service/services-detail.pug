@@ -29,10 +29,10 @@ section.section-description
       .overview-box__group
         h2.heading-secondary.ma-bt-lg Select your prefered date for your schedule!
         .overview-box__detail
-          form(action="/")
+          form(action="/service-schedule", method="POST")
             label.overview-box__label Date
             input(type="date", name="date")
-            input(type="hidden" value=`${service._id}`)
+            input(type="hidden" value=`${service._id}`, name="serviceId")
             button.btn.btn--green.span-all-rows(type="submit") Schedule now!
 
         .overview-box__detail

@@ -10,22 +10,22 @@ include ../../includes/profile/profile-head.pug
           .col-lg-12.grid-margin.stretch-card
             .card
               .card-body
-                h4.card-title Inquiry History
+                h4.card-title Schedule History
                 .table-responsive
-                  each inquiry in inquiries
+                  each schedule in schedules
                     table.table.table-striped
                       thead
                         tr
-                          th Subject
-                          th Message
+                          th Service
+                          th Location
                           th Date
                           th Status
                         tbody
                           tr
-                            td= inquiry.subject                               
-                            td= inquiry.message
-                            td= inquiry.date
-                            td= inquiry.status
+                            td= schedule.serviceId.title                            
+                            td= schedule.serviceId.location  
+                            td= schedule.date
+                            td= schedule.status
             
 
 

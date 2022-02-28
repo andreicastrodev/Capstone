@@ -1,5 +1,4 @@
 include ../../includes/admin/admin-head.pug
-
 .container-scroller
   include ../../includes/admin/admin-navbar-up.pug
   .container-fluid.page-body-wrapper
@@ -12,24 +11,43 @@ include ../../includes/admin/admin-head.pug
               .card-body
                 h4.card-title Manage Inquiry
                 .table-responsive
-                  each inquiry in inquiries
+                  each inquiry,index in inquiries
+                    .popup(id=`popup${index}`)
+                      .popup__content
+                        .popup__right
+                          a.popup__close(href='/admin/manage-inquiry') &times;
+                          h2.heading-secondary.u-margin-bottom-small= inquiry.subject
+                          p.popup__text= inquiry.message
+                          form(action="/admin/manage-inquiry/mark-as-read", method="POST")
+                            input(type="hidden" value=`${inquiry._id}`, name="inquiryId") 
+                            button(type="submit", class="btn btn--green btn--animated") mark as read
                     table.table.table-striped
                       thead
                         tr
-                          th Subject
-                          th Message
+                          th Name
+                          th Email
                           th Date
+                          th Status
                           th Actions
                         tbody
                           tr
-                            td= inquiry.subject                               
-                            td= inquiry.message
+                            td= inquiry.userId.name
+                            td= inquiry.userId.email
                             td= inquiry.date
+                            td= inquiry.status
                             td
-                              form(action="/admin/delete-inquiry",method="POST")
+                             if inquiry.status === "Read"                        
+                              a(href=`#popup${index}`)                            
+                               button.btn.btn-danger(disabled) View 
+                             else 
+                              a(href=`#popup${index}`)                            
+                               button.btn.btn-danger View 
+                            td
+                             form(action="/admin/delete-inquiry",method="POST")
                                 input(type="hidden", value=`${inquiry._id}`, name="inquiryId")
                                 button.btn.btn-danger(type='submit') Delete 
 
+      
 
 
 

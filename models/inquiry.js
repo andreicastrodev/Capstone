@@ -11,8 +11,17 @@ const inquirySchema = new Schema({
     type: String,
     required: true
   },
-  date:{
+  date: {
     type: String,
+    required: true
+  },
+  status:{
+    type: String,
+    required: true
+  },
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
     required: true
   }
 });

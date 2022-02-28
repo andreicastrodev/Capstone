@@ -1,0 +1,43 @@
+include ../../includes/admin/admin-head.pug
+
+.container-scroller
+  include ../../includes/admin/admin-navbar-up.pug
+  .container-fluid.page-body-wrapper
+    include ../../includes/admin/admin-navbar-side.pug
+    .main-panel
+      .content-wrapper
+        .row
+          .col-lg-12.grid-margin.stretch-card
+            .card
+              .card-body
+                h4.card-title Manage Schedule
+                .table-responsive
+                  each schedule in schedules
+                    table.table.table-striped
+                      thead
+                        tr
+                          th Name 
+                          th Email
+                          th Service
+                          th Date
+                          th Status
+                          th Actions
+                        tbody
+                          tr
+                            td= schedule.userId.name
+                            td= schedule.userId.email
+                            td= schedule.serviceId.title                            
+                            td= schedule.date
+                            td= schedule.status
+                            td
+                             form(action="/admin/confirm-schedule",method="POST")
+                                input(type="hidden", value=`${schedule._id}`, name="scheduleId")
+                                button.btn.btn-danger(type='submit') Confirm 
+                            td
+                             form(action="/admin/cancel-schedule",method="POST")
+                                input(type="hidden", value=`${schedule._id}`, name="scheduleId")
+                                button.btn.btn-danger(type='submit') Cancel 
+
+
+ 
+include ../../includes/admin/admin-scripts.pug

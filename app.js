@@ -7,7 +7,7 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const MONGODB_URI = 'mongodb+srv://andydev:123123dd@cluster0.jphuk.mongodb.net/capstone';
 const errorController = require('./controllers/errorController')
-
+const User = require('./models/user')
 // multer config
 const fileStorage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -58,6 +58,26 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 //session middleware
 app.use(session({ secret: 'my long secret', resve: false, saveUninitialized: false, store: store }))
+
+
+//user middleware
+
+app.use(async (req, res, next) => {
+    if (!req.session.user) {
+        return next();
+    }
+    try {
+        const user = await User.findById(req.session.user._id);
+        if (!user) {
+            return next();
+        }
+        req.user = user;
+        next();
+    } catch (error) {
+        next(new Error(error));
+    }
+})
+
 //listen to routes
 app.use("/admin", adminRoutes);
 app.use(defaultRoutes);
