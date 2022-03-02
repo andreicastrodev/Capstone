@@ -7,7 +7,8 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const MONGODB_URI = 'mongodb+srv://andydev:123123dd@cluster0.jphuk.mongodb.net/capstone';
 const errorController = require('./controllers/errorController')
-const User = require('./models/user')
+const User = require('./models/user');
+const Admin = require('./models/admin');
 // multer config
 const fileStorage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -57,11 +58,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 //exposes the images folder to the user
 app.use('/images', express.static(path.join(__dirname, 'images')));
 //session middleware
-app.use(session({ secret: 'my long secret', resve: false, saveUninitialized: false, store: store }))
+app.use(session({ secret: 'my long secret', resave: false, saveUninitialized: false, store: store }))
 
 
 //user middleware
-
 app.use(async (req, res, next) => {
     if (!req.session.user) {
         return next();
@@ -72,6 +72,23 @@ app.use(async (req, res, next) => {
             return next();
         }
         req.user = user;
+        next();
+    } catch (error) {
+        next(new Error(error));
+    }
+})
+
+// admin middleware auth
+app.use(async (req, res, next) => {
+    if (!req.session.admin) {
+        return next();
+    }
+    try {
+        const admin = await Admin.findById(req.session.admin._id);
+        if (!admin) {
+            return next();
+        }
+        req.admin = admin;
         next();
     } catch (error) {
         next(new Error(error));

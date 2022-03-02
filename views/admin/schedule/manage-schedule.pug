@@ -21,7 +21,9 @@ include ../../includes/admin/admin-head.pug
                           th Service
                           th Date
                           th Status
-                          th Actions
+                          th 
+                          th Actions 
+                          tn
                         tbody
                           tr
                             td= schedule.userId.name
@@ -30,14 +32,17 @@ include ../../includes/admin/admin-head.pug
                             td= schedule.date
                             td= schedule.status
                             td
-                             form(action="/admin/confirm-schedule",method="POST")
+                             form(action="/admin/manage-schedule/confirm-schedule",method="POST")
                                 input(type="hidden", value=`${schedule._id}`, name="scheduleId")
-                                button.btn.btn-danger(type='submit') Confirm 
+                                button.btn.btn-danger(type='submit', ) Confirm 
                             td
-                             form(action="/admin/cancel-schedule",method="POST")
+                             form(action="/admin/manage-schedule/cancel-schedule",method="POST")
                                 input(type="hidden", value=`${schedule._id}`, name="scheduleId")
-                                button.btn.btn-danger(type='submit') Cancel 
-
+                                button.btn.btn-danger(type='submit',) Cancel 
+                            td
+                             form(action="/admin/manage-schedule/delete-schedule",method="POST")
+                                input(type="hidden", value=`${schedule._id}`, name="scheduleId")
+                                button.btn.btn-danger(type='submit',) Delete 
 
  
 include ../../includes/admin/admin-scripts.pug

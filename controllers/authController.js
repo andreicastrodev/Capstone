@@ -1,4 +1,5 @@
 const User = require('../models/user')
+const Admin = require('../models/admin');
 const bcrypt = require('bcryptjs');
 exports.getLogin = (req, res, next) => {
   res.render('auth/login', {
@@ -16,6 +17,40 @@ exports.getSignup = (req, res, next) => {
   });
 };
 
+exports.getAdminLogin = (req, res, next) => {
+  res.render('admin/login', {
+    pageTitle: 'Login',
+    path: '/'
+  })
+}
+
+exports.getAdminSignup = (req, res, next) => {
+  res.render('admin/register', {
+    pageTitle: 'Register',
+    path: '/'
+  })
+}
+
+exports.postAdminSignup = async (req, res, next) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  try {
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const adminAccount = new Admin({
+      email,
+      password: hashedPassword
+    })
+    const result = await adminAccount.save();
+    console.log(`ADMIN CREATED`, result);
+
+    return res.redirect('/admin/login');
+  } catch (error) {
+    const err = new Error(error);
+    err.httpStatusCode = 500;
+    return next(err);
+  }
+}
 
 exports.postSignup = async (req, res, next) => {
   const name = req.body.name;
@@ -73,10 +108,45 @@ exports.postLogin = async (req, res, next) => {
 }
 
 
+exports.postAdminLogin = async (req, res, next) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  try {
+    const admin = await Admin.findOne({ email: email })
+    if (!admin) {
+      return res.redirect('/admin/login')
+    }
+    const doMatch = await bcrypt.compare(password, admin.password);
+    if (doMatch) {
+      req.session.adminIsLoggedIn = true;
+      req.session.admin = admin;
+      return req.session.save(err => {
+        console.log(`Error:`, err);
+        res.redirect('/admin/dashboard')
+      })
+    }
+  } catch (error) {
+    const err = new Error(error);
+    err.httpStatusCode = 500;
+    return next(err);
+  }
+
+}
+
+
+
 
 exports.postLogout = (req, res, next) => {
   req.session.destroy((err) => {
     console.log(`LOGGED OUT`, err)
     res.redirect('/')
+  })
+}
+
+exports.postAdminLogout = (req, res, next) => {
+  req.session.destroy((err) => {
+    console.log(`LOGGED OUT`, err)
+    res.redirect('/admin/login')
   })
 }

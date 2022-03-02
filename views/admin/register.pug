@@ -1,0 +1,51 @@
+doctype html
+head
+  // Required meta tags
+  meta(charset='utf-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+  title Skydash Admin
+  // plugins:css
+  link(rel='stylesheet' href='../../vendors/feather/feather.css')
+  link(rel='stylesheet' href='../../vendors/ti-icons/css/themify-icons.css')
+  link(rel='stylesheet' href='../../vendors/css/vendor.bundle.base.css')
+  // endinject
+  // Plugin css for this page
+  // End plugin css for this page
+  // inject:css
+  link(rel='stylesheet' href='../../css/vertical-layout-light/style.css')
+  // endinject
+  link(rel='shortcut icon' href='../../images/favicon.png')
+.container-scroller
+  .container-fluid.page-body-wrapper.full-page-wrapper
+    .content-wrapper.d-flex.align-items-center.auth.px-0
+      .row.w-100.mx-0
+        .col-lg-4.mx-auto
+          .auth-form-light.text-left.py-5.px-4.px-sm-5
+            h4 New here?
+            h6.font-weight-light Signing up is easy. It only takes a few steps
+            form.pt-3(action="/admin/sign-up", method="POST")
+              .form-group
+                input#exampleInputUsername1.form-control.form-control-lg(type='email' name="email", placeholder='Email')
+              .form-group
+                input#exampleInputPassword1.form-control.form-control-lg(type='password',name="password", placeholder='Password')
+              .mt-3
+                button(type="submit")
+                    a.btn.btn-block.btn-primary.btn-lg.font-weight-medium.auth-form-btn SIGN UP
+              .text-center.mt-4.font-weight-light
+                | Already have an account? 
+                a.text-primary(href='/admin/login') Login
+    // content-wrapper ends
+  // page-body-wrapper ends
+// container-scroller
+// plugins:js
+script(src='../../vendors/js/vendor.bundle.base.js')
+// endinject
+// Plugin js for this page
+// End plugin js for this page
+// inject:js
+script(src='../../js/off-canvas.js')
+script(src='../../js/hoverable-collapse.js')
+script(src='../../js/template.js')
+script(src='../../js/settings.js')
+script(src='../../js/todolist.js')
+// endinject

@@ -1,0 +1,35 @@
+include ../../includes/profile/profile-head.pug
+
+.container-scroller
+  include ../../includes/profile/profile-navbar-up.pug
+  .container-fluid.page-body-wrapper
+    include ../../includes/profile/profile-navbar-side.pug
+    .main-panel
+      .content-wrapper
+        .row
+            .col-md-6.grid-margin.stretch-card
+                .card
+                    .card-body
+                      h4.card-title Update Info
+                      form.forms-sample(action="/profile/update-settings", method="POST")
+                        .form-group
+                            label Name
+                            input.form-control(type='text' placeholder='Name',name="name", value=`${userDetails.name}`)
+                        .form-group
+                            label Email address
+                            input.form-control(type='email' placeholder='Email', name="email", value=`${userDetails.email}`)
+                        .form-group
+                            label Mobile Number
+                            input.form-control(type='number' placeholder='Mobile Number', name="mobileNumber" value=`${userDetails.mobileNumber}`)                           
+                        .form-group
+                            label Password
+                            input.form-control(type='password' placeholder='Password', name="password")
+                        .form-group
+                            label Confirm Password
+                            input.form-control(type='password' placeholder='Password')
+                        button.btn.btn-primary.mr-2(type='submit') Update
+
+
+
+ 
+include ../../includes/admin/admin-scripts.pug

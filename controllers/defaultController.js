@@ -1,6 +1,7 @@
 const Service = require('../models/service');
 const Inquiry = require('../models/inquiry');
 const Schedule = require('../models/schedule');
+const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 
 exports.getIndex = (req, res, next) => {
@@ -111,6 +112,44 @@ exports.getScheduleHistory = async (req, res, next) => {
     }
 }
 
+
+exports.getSettings = async (req, res, next) => {
+    const userDetails = req.user;
+    return res.render('default/profile/profile-settings', {
+        pageTitle: 'Settings',
+        userDetails,
+        path: '/',
+        isAuth: req.session.isLoggedIn
+    })
+}
+
+exports.postSettings = async (req, res, next) => {
+    const updatedName = req.body.name;
+    const updatedEmail = req.body.email;
+    const updatedMobileNumber = req.body.mobileNumber;
+    const updatedPassword = req.body.password
+    try {
+        req.user.name = updatedName;
+        req.user.email = updatedEmail;
+        req.user.mobileNumber = updatedMobileNumber;
+
+        if (updatedPassword.length > 6 && updatedPassword !== '') {
+            const newHashedPassword = await bcrypt.hash(updatedPassword, 12);
+            req.user.password = newHashedPassword;
+        }
+
+        const result = await req.user.save();
+        console.log(`USER UPDATED`, result);
+        return res.redirect('/profile/settings');
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+
+
+}
+
 exports.postInquiry = async (req, res, next) => {
 
     const subject = req.body.subject;
@@ -142,12 +181,15 @@ exports.postServiceSchedule = async (req, res, next) => {
     const serviceId = mongoose.Types.ObjectId(req.body.serviceId);
     const schedule = new Schedule({
         date,
-        status:'Pending',
+        status: 'Pending',
         serviceId,
-        userId: req.user
+        userId: req.user._id
     })
     try {
         await schedule.save()
+        console.log(`this is schedule`, schedule);
+        const result = await req.user.addSchedule(schedule);
+        console.log(result)
         console.log('SCHEDULE CREATED')
         res.redirect('/profile/schedule-history');
     } catch (error) {

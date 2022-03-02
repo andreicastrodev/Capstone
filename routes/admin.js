@@ -13,4 +13,8 @@ router.post('/edit-service', adminController.postEditService);
 router.post('/delete-service', adminController.postDeleteService);
 router.post('/delete-inquiry', adminController.postDeleteInquiry);
 router.post('/manage-inquiry/mark-as-read', adminController.postReadInquiry);
+router.post('/manage-schedule/confirm-schedule', adminController.postConfirmSchedule);
+router.post('/manage-schedule/cancel-schedule', adminController.postCancelSchedule);
+router.post('/manage-schedule/delete-schedule', adminController.postDeleteSchedule);
+
 module.exports = router;

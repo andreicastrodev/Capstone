@@ -1,8 +1,13 @@
 const Service = require('../models/service');
 const Inquiry = require('../models/inquiry');
 const Schedule = require('../models/schedule');
+
 const mongoose = require('mongoose');
 exports.getIndex = (req, res, next) => {
+    if (!req.session.adminIsLoggedIn) {
+        return res.redirect('/admin/login');
+    }
+
     res.render('admin/dashboard', {
         pageTitle: 'Admin',
         path: '/'
@@ -10,6 +15,9 @@ exports.getIndex = (req, res, next) => {
 }
 
 exports.getCreateService = (req, res, next) => {
+    if (!req.session.adminIsLoggedIn) {
+        return res.redirect('/admin/login');
+    }
     res.render('admin/services/create-service', {
         pageTitle: 'Create Service',
         path: '/'
@@ -17,6 +25,9 @@ exports.getCreateService = (req, res, next) => {
 }
 
 exports.getManageService = async (req, res, next) => {
+    if (!req.session.adminIsLoggedIn) {
+        return res.redirect('/admin/login');
+    }
     try {
         const services = await Service.find();
         console.log(services)
@@ -35,6 +46,9 @@ exports.getManageService = async (req, res, next) => {
 
 
 exports.getEditService = async (req, res, next) => {
+    if (!req.session.adminIsLoggedIn) {
+        return res.redirect('/admin/login');
+    }
     const serveId = req.params.serviceId;
     try {
         const service = await Service.findById(serveId);
@@ -53,6 +67,9 @@ exports.getEditService = async (req, res, next) => {
 
 
 exports.getManageInquiry = async (req, res, next) => {
+    if (!req.session.adminIsLoggedIn) {
+        return res.redirect('/admin/login');
+    }
     try {
         const inquiries = await Inquiry.find().populate('userId')
         console.log(inquiries);
@@ -69,7 +86,9 @@ exports.getManageInquiry = async (req, res, next) => {
 
 
 exports.getManageSchedule = async (req, res, next) => {
-
+    if (!req.session.adminIsLoggedIn) {
+        return res.redirect('/admin/login');
+    }
     try {
         const schedules = await Schedule.find().populate('serviceId').populate('userId');
         console.log(schedules);
@@ -86,6 +105,7 @@ exports.getManageSchedule = async (req, res, next) => {
         return next(err);
     }
 }
+
 
 
 
@@ -185,6 +205,55 @@ exports.postReadInquiry = async (req, res, next) => {
         console.log('INQUIRY READ');
         return res.redirect('/admin/manage-inquiry');
 
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
+
+
+exports.postConfirmSchedule = async (req, res, next) => {
+    const scheduleId = req.body.scheduleId
+
+    try {
+        const schedule = await Schedule.findById(scheduleId)
+        schedule.status = 'Confirmed';
+        await schedule.save();
+        console.log('SCHEDULE CONFIRMED');
+        return res.redirect('/admin/manage-schedule');
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
+
+
+exports.postCancelSchedule = async (req, res, next) => {
+    const scheduleId = req.body.scheduleId
+
+    try {
+        const schedule = await Schedule.findById(scheduleId)
+        schedule.status = 'Cancelled';
+        await schedule.save();
+        console.log('SCHEDULE Cancelled');
+        return res.redirect('/admin/manage-schedule');
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
+
+
+exports.postDeleteSchedule = async (req, res, next) => {
+    const scheduleId = req.body.scheduleId;
+    try {
+        await Schedule.deleteOne({ _id: scheduleId });
+        await req.user.removeSchedule(scheduleId);
+        console.log('SCHEDULE DELETED');
+        return res.redirect('/admin/manage-schedule');
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
