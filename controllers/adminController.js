@@ -3,6 +3,19 @@ const Inquiry = require('../models/inquiry');
 const Schedule = require('../models/schedule');
 const User = require('../models/user')
 const bcrypt = require('bcryptjs');
+const nodemailer = require('nodemailer');
+const sendgridTransport = require('nodemailer-sendgrid-transport');
+const { validationResult } = require('express-validator/check');
+
+const transporter = nodemailer.createTransport(
+    sendgridTransport({
+        auth: {
+            api_key: "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"
+        }
+    })
+);
+
+
 
 exports.getIndex = async (req, res, next) => {
     if (!req.session.adminIsLoggedIn) {
@@ -267,10 +280,19 @@ exports.postDeleteInquiry = async (req, res, next) => {
 exports.postReadInquiry = async (req, res, next) => {
     const inquiryId = req.body.inquiryId;
     try {
-        const inquiry = await Inquiry.findById(inquiryId);
+        const inquiry = await Inquiry.findById(inquiryId).populate('userId');
         inquiry.status = 'Read';
         await inquiry.save();
         console.log('INQUIRY READ');
+        transporter.sendMail({
+            to: inquiry.userId.email,
+            from: 'andreinichol.e.castro.dev@gmail.com',
+            subject: 'About your Inquiry',
+            html: `
+              <p>Good day!</p>
+              <p>We have read your concern about this certain topic, we will email you again if we confirmed it.</p>
+            `
+        });
         return res.redirect('/admin/manage-inquiry');
 
     } catch (error) {
@@ -285,10 +307,20 @@ exports.postConfirmSchedule = async (req, res, next) => {
     const scheduleId = req.body.scheduleId
 
     try {
-        const schedule = await Schedule.findById(scheduleId)
+        const schedule = await Schedule.findById(scheduleId).populate('userId');
+        console.log(schedule)
         schedule.status = 'Confirmed';
         await schedule.save();
         console.log('SCHEDULE CONFIRMED');
+        transporter.sendMail({
+            to: schedule.userId.email,
+            from: 'andreinichol.e.castro.dev@gmail.com',
+            subject: 'Confirmation Of Schedule',
+            html: `
+              <p>Good day!</p>
+              <p>Your shedule has been approved, please go to the barangay at 12pm nooon of 24th.</p>
+            `
+        });
         return res.redirect('/admin/manage-schedule');
     } catch (error) {
         const err = new Error(error);
@@ -302,10 +334,19 @@ exports.postCancelSchedule = async (req, res, next) => {
     const scheduleId = req.body.scheduleId
 
     try {
-        const schedule = await Schedule.findById(scheduleId)
+        const schedule = await Schedule.findById(scheduleId).populate('userId')
         schedule.status = 'Cancelled';
         await schedule.save();
         console.log('SCHEDULE Cancelled');
+        transporter.sendMail({
+            to: schedule.userId.email,
+            from: 'andreinichol.e.castro.dev@gmail.com',
+            subject: 'Cancelation Of Schedule',
+            html: `
+              <p>Good day!</p>
+              <p>Your shedule has been cancelled, your schedule cannot be processed because we are fully booked, please schedule on a different date.</p>
+            `
+        });
         return res.redirect('/admin/manage-schedule');
     } catch (error) {
         const err = new Error(error);
