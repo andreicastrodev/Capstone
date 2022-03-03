@@ -13,7 +13,7 @@ nav.navbar.col-lg-12.col-12.p-0.fixed-top.d-flex.flex-row
           a#profileDropdown.nav-link.dropdown-toggle(href='#' data-toggle='dropdown')
             img(src='/images/faces/face28.jpg' alt='profile')
           .dropdown-menu.dropdown-menu-right.navbar-dropdown(aria-labelledby='profileDropdown')
-            a.dropdown-item
+            a.dropdown-item(href="/admin/admin-settings")
               i.ti-settings.text-primary
               |                 Settings
             form(action="/admin/logout", method="POST")   

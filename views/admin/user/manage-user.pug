@@ -1,0 +1,27 @@
+include ../../includes/admin/admin-head.pug
+.container-scroller
+  include ../../includes/admin/admin-navbar-up.pug
+  .container-fluid.page-body-wrapper
+    include ../../includes/admin/admin-navbar-side.pug
+    .main-panel
+      .content-wrapper
+        .row
+          .col-lg-12.grid-margin.stretch-card
+            .card
+              .card-body
+                h4.card-title Manage Users
+                .table-responsive
+                  each user in users
+                    table.table.table-striped
+                      thead
+                        tr
+                          th Name
+                          th Email
+                          th Mobile Number
+                        tbody
+                          tr
+                            td= user.name
+                            td= user.email
+                            td= user.mobileNumber
+
+include ../../includes/admin/admin-scripts.pug

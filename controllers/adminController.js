@@ -1,17 +1,35 @@
 const Service = require('../models/service');
 const Inquiry = require('../models/inquiry');
 const Schedule = require('../models/schedule');
+const User = require('../models/user')
+const bcrypt = require('bcryptjs');
 
-const mongoose = require('mongoose');
-exports.getIndex = (req, res, next) => {
+exports.getIndex = async (req, res, next) => {
     if (!req.session.adminIsLoggedIn) {
         return res.redirect('/admin/login');
     }
 
-    res.render('admin/dashboard', {
-        pageTitle: 'Admin',
-        path: '/'
-    })
+    try {
+        const numberOfUsers = await User.countDocuments();
+        const numberOfServices = await Service.countDocuments();
+        const numberOfInquiry = await Inquiry.countDocuments();
+        const numberOfSchedule = await Schedule.countDocuments();
+        return res.render('admin/dashboard', {
+            pageTitle: 'Admin',
+            dataNumber: {
+                numberOfServices,
+                numberOfUsers,
+                numberOfInquiry,
+                numberOfSchedule
+            },
+            path: '/'
+        })
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+
 }
 
 exports.getCreateService = (req, res, next) => {
@@ -107,7 +125,57 @@ exports.getManageSchedule = async (req, res, next) => {
 }
 
 
+exports.getManageUser = async (req, res, next) => {
+    if (!req.session.adminIsLoggedIn) {
+        return res.redirect('/admin/login');
+    }
+    try {
+        const users = await User.find();
+        console.log(users);
+        res.render('admin/user/manage-user', {
+            pageTitle: 'Manage Users',
+            users,
+            path: '',
+        })
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
 
+
+exports.getAdminSettings = async (req, res, next) => {
+    const adminDetails = req.admin;
+    return res.render('admin/profile/admin-settings', {
+        pageTitle: 'Schedule History',
+        adminDetails,
+        path: '/',
+    })
+}
+
+
+exports.postAdminSettings = async (req, res, next) => {
+
+    const updatedEmail = req.body.email;
+    const updatedPassword = req.body.password
+    try {
+        req.admin.email = updatedEmail;
+
+        if (updatedPassword.length > 6 && updatedPassword !== '') {
+            const newHashedPassword = await bcrypt.hash(updatedPassword, 12);
+            req.admin.password = newHashedPassword;
+        }
+
+        const result = await req.admin.save();
+        console.log(`admin UPDATED`, result);
+        return res.redirect('/admin/admin-settings');
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
 
 exports.postCreateService = async (req, res, next) => {
     const title = req.body.title;

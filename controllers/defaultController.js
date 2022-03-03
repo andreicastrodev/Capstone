@@ -56,6 +56,10 @@ exports.getServicesDetail = async (req, res, next) => {
 }
 
 exports.getInquiry = (req, res, next) => {
+
+    if (!req.session.isLoggedIn) {
+        return res.redirect('/login');
+    }
     res.render('default/inquiry/inquiry', {
         pageTitle: 'Inquiry',
         path: '/',
@@ -64,6 +68,9 @@ exports.getInquiry = (req, res, next) => {
 }
 
 exports.getProfile = (req, res, next) => {
+    if (!req.session.isLoggedIn) {
+        return res.redirect('/login');
+    }
     res.render('default/profile/profile', {
         pageTitle: 'Profile',
         path: '/',
@@ -73,6 +80,9 @@ exports.getProfile = (req, res, next) => {
 
 
 exports.getInquiryHistory = async (req, res, next) => {
+    if (!req.session.isLoggedIn) {
+        return res.redirect('/login');
+    }
     try {
 
         const inquiries = await Inquiry.find({ userId: req.user._id })
@@ -94,7 +104,9 @@ exports.getInquiryHistory = async (req, res, next) => {
 
 
 exports.getScheduleHistory = async (req, res, next) => {
-
+    if (!req.session.isLoggedIn) {
+        return res.redirect('/login');
+    }
     try {
         const schedules = await Schedule.find({ userId: req.user._id }).populate('serviceId');
         console.log(schedules);
@@ -114,6 +126,9 @@ exports.getScheduleHistory = async (req, res, next) => {
 
 
 exports.getSettings = async (req, res, next) => {
+    if (!req.session.isLoggedIn) {
+        return res.redirect('/login');
+    }
     const userDetails = req.user;
     return res.render('default/profile/profile-settings', {
         pageTitle: 'Settings',
@@ -146,8 +161,6 @@ exports.postSettings = async (req, res, next) => {
         err.httpStatusCode = 500;
         return next(err);
     }
-
-
 }
 
 exports.postInquiry = async (req, res, next) => {

@@ -1,0 +1,28 @@
+include ../../includes/admin/admin-head.pug
+
+.container-scroller
+  include ../../includes/admin/admin-navbar-up.pug
+  .container-fluid.page-body-wrapper
+    include ../../includes/admin/admin-navbar-side.pug
+    .main-panel
+      .content-wrapper
+        .row
+            .col-md-6.grid-margin.stretch-card
+                .card
+                    .card-body
+                      h4.card-title Update Info
+                      form.forms-sample(action="/admin/update-settings", method="POST")
+
+                        .form-group
+                            label Email address
+                            input.form-control(type='email' placeholder='Email', name="email", value=`${adminDetails.email}`)                         
+                        .form-group
+                            label Password
+                            input.form-control(type='password' placeholder='Password', name="password")
+                        .form-group
+                            label Confirm Password
+                            input.form-control(type='password' placeholder='Password')
+                        button.btn.btn-primary.mr-2(type='submit') Update
+
+ 
+include ../../includes/admin/admin-scripts.pug
