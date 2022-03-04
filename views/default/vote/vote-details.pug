@@ -1,0 +1,38 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  meta(http-equiv='X-UA-Compatible' content='ie=edge')
+  link(href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900' rel='stylesheet')
+  link(rel='stylesheet' href='/css/icon-font.css')
+  link(rel='stylesheet' href='/css/style.css')  
+  title= pageTitle
+include ../../includes/navigation-bar.pug
+
+main
+  section.section-book
+    .row
+      .book
+        .book__form
+          form.form(action='#')
+            .u-margin-bottom-medium
+              h2.heading-secondary
+                | Barangay Project May 2022
+            .form__group.u-margin-bottom-medium
+              .form__radio-group
+                input#vote1.form__radio-input(type='radio' name='vote')
+                label.form__radio-label(for='vote1')
+                  span.form__radio-button
+                  |                                             General Cleaning
+              .form__radio-group
+                input#vote2.form__radio-input(type='radio' name='vote')
+                label.form__radio-label(for='vote2')
+                  span.form__radio-button
+                  |                                             Feeding Program
+              .form__radio-group
+                input#vote3.form__radio-input(type='radio' name='vote')
+                label.form__radio-label(for='vote3')
+                  span.form__radio-button
+                  |                                             Work Seminars
+            .form__group
+              button.btn.btn--green Vote now!

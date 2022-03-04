@@ -1,0 +1,21 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  link(href='https://fonts.googleapis.com/css?family=Lato:300,300i,700' rel='stylesheet')
+  link(rel='stylesheet' href='css/style-1.css')
+  title= pageTitle
+  include ../../includes/navigation-bar.pug
+
+main.main
+ .card-container
+    .card
+      .card__header
+        .card__picture
+        h3.heading-tertirary
+          span May 2022 Projects
+      .card__details
+        h4.card__sub-heading About
+        p.card__text sample
+      .card__footer
+        a.btn.btn--green.btn--small(href=`#`) Details

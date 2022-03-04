@@ -1,0 +1,32 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  link(href='https://fonts.googleapis.com/css?family=Lato:300,300i,700' rel='stylesheet')
+  link(rel='stylesheet' href='/css/style.css')  
+  title= pageTitle
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js')
+  include ../../includes/navigation-bar.pug
+  canvas#myChart(class="canvas")
+
+script.
+  var xValues = ["General Cleaning", "Feeding Program", "Work Seminars"];
+  var yValues = [100, 49, 44, 24, 15];
+  var barColors = ["violet", "pink","cyan"];
+  new Chart("myChart", {
+  type: "bar",
+  data: {
+  labels: xValues,
+  datasets: [{
+  backgroundColor: barColors,
+  data: yValues
+  }]
+  },
+  options: {
+  legend: {display: false},
+  title: {
+  display: true,
+  text: "Barangay Project for May 2022"
+  }
+  }
+  });

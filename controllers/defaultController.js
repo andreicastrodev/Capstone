@@ -138,6 +138,42 @@ exports.getSettings = async (req, res, next) => {
     })
 }
 
+exports.getVotes = async (req, res, next) => {
+    if (!req.session.isLoggedIn) {
+        return res.redirect('/login');
+    }
+
+    return res.render('default/vote/votes', {
+        pageTitle: 'Votes',
+        path: '/',
+        isAuth: req.session.isLoggedIn
+    })
+}
+
+exports.getVoteDetails = async (req, res, next) => {
+    if (!req.session.isLoggedIn) {
+        return res.redirect('/login');
+    }
+
+    return res.render('default/vote/vote-details', {
+        pageTitle: 'Vote Details',
+        path: '/',
+        isAuth: req.session.isLoggedIn
+    })
+}
+
+exports.getVoteResults = async (req, res, next) => {
+    if (!req.session.isLoggedIn) {
+        return res.redirect('/login');
+    }
+
+    return res.render('default/vote/vote-results', {
+        pageTitle: 'Vote Results',
+        path: '/',
+        isAuth: req.session.isLoggedIn
+    })
+}
+
 exports.postSettings = async (req, res, next) => {
     const updatedName = req.body.name;
     const updatedEmail = req.body.email;
