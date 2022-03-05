@@ -1,0 +1,34 @@
+include ../../includes/admin/admin-head.pug
+
+.container-scroller
+  include ../../includes/admin/admin-navbar-up.pug
+  .container-fluid.page-body-wrapper
+    include ../../includes/admin/admin-navbar-side.pug
+    .main-panel
+      .content-wrapper
+        .row
+          .col-12.grid-margin.stretch-card
+            .card
+              .card-body
+                h4.card-title= pageTitle
+                form.forms-sample(action="/admin/create-vote/", method="POST")
+                  .form-group
+                    label(for='exampleInputName1') Title
+                    input#exampleInputName1.form-control(type='text' name="title" placeholder='title')
+                  .form-group
+                    label(for='exampleInputCity1') Choice 1
+                    input#exampleInputCity1.form-control(type='text', name="choice1", placeholder='choice1')
+                  .form-group
+                    label(for='exampleInputCity1') Choice 2
+                    input#exampleInputCity1.form-control(type='text', name="choice2", placeholder='choice2')
+                  .form-group
+                    label(for='exampleInputCity1') Choice 3
+                    input#exampleInputCity1.form-control(type='text', name="choice3", placeholder='choice3')
+                  .form-group
+                    label(for='exampleTextarea1') Description
+                    textarea#exampleTextarea1.form-control(rows='4', name="description")
+                  button.btn.btn-primary.mr-2(type='submit') Create
+
+
+ 
+include ../../includes/admin/admin-scripts.pug

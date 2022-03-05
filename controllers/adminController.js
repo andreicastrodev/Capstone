@@ -1,11 +1,11 @@
 const Service = require('../models/service');
 const Inquiry = require('../models/inquiry');
 const Schedule = require('../models/schedule');
-const User = require('../models/user')
+const User = require('../models/user');
+const Vote = require('../models/vote');
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const sendgridTransport = require('nodemailer-sendgrid-transport');
-const { validationResult } = require('express-validator/check');
 
 const transporter = nodemailer.createTransport(
     sendgridTransport({
@@ -261,6 +261,52 @@ exports.postDeleteService = async (req, res, next) => {
         return next(err);
     }
 
+}
+
+
+
+
+exports.getCreateVote = (req, res, next) => {
+    if (!req.session.adminIsLoggedIn) {
+        return res.redirect('/admin/login');
+    }
+    try {
+
+       return res.render('admin/vote/create-vote', {
+            pageTitle: 'Create Vote',
+            path: '',
+        })
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
+
+
+
+
+exports.postCreateVote = async (req, res, next) => {
+    const title = req.body.title;
+    const choice1 = req.body.choice1;
+    const choice2 = req.body.choice2;
+    const choice3 = req.body.choice3;
+    const description = req.body.description;
+
+    const vote = new Vote({
+        title,
+        choices: [choice1, choice2, choice3],
+        description
+    });
+    try {
+        const result = await vote.save();
+        console.log('VOTE CREATED', result);
+        return res.redirect('/admin/dashboard');
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
 }
 
 exports.postDeleteInquiry = async (req, res, next) => {

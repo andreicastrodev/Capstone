@@ -16,23 +16,22 @@ main
         .book__form
           form.form(action='#')
             .u-margin-bottom-medium
-              h2.heading-secondary
-                | Barangay Project May 2022
+              h2.heading-secondary= vote.title
             .form__group.u-margin-bottom-medium
               .form__radio-group
                 input#vote1.form__radio-input(type='radio' name='vote')
                 label.form__radio-label(for='vote1')
                   span.form__radio-button
-                  |                                             General Cleaning
+                  =  vote.choices[0]
               .form__radio-group
                 input#vote2.form__radio-input(type='radio' name='vote')
                 label.form__radio-label(for='vote2')
                   span.form__radio-button
-                  |                                             Feeding Program
+                  = vote.choices[1]
               .form__radio-group
                 input#vote3.form__radio-input(type='radio' name='vote')
                 label.form__radio-label(for='vote3')
                   span.form__radio-button
-                  |                                             Work Seminars
+                  = vote.choices[2]
             .form__group
               button.btn.btn--green Vote now!

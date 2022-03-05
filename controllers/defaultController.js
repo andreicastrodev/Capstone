@@ -1,6 +1,7 @@
 const Service = require('../models/service');
 const Inquiry = require('../models/inquiry');
 const Schedule = require('../models/schedule');
+const Vote = require('../models/vote');
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 
@@ -143,23 +144,48 @@ exports.getVotes = async (req, res, next) => {
         return res.redirect('/login');
     }
 
-    return res.render('default/vote/votes', {
-        pageTitle: 'Votes',
-        path: '/',
-        isAuth: req.session.isLoggedIn
-    })
-}
-
-exports.getVoteDetails = async (req, res, next) => {
-    if (!req.session.isLoggedIn) {
-        return res.redirect('/login');
+    try {
+        const votes = await Vote.find();
+        console.log(votes);
+        return res.render('default/vote/votes', {
+            pageTitle: 'Votes',
+            path: '/',
+            votes,
+            isAuth: req.session.isLoggedIn
+        })
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
     }
 
-    return res.render('default/vote/vote-details', {
-        pageTitle: 'Vote Details',
-        path: '/',
-        isAuth: req.session.isLoggedIn
-    })
+
+}
+
+
+
+exports.getVotesDetails = async (req, res, next) => {
+    if (!req.session.adminIsLoggedIn) {
+        return res.redirect('/admin/login');
+    }
+
+    const voteId = req.params.voteId;
+
+    try {
+        const vote = await Vote.findById(voteId);
+        console.log(vote);
+        return res.render('default/vote/vote-details', {
+            pageTitle: 'Vote Details',
+            path: '/',
+            vote,
+            isAuth: req.session.isLoggedIn
+        })
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+
 }
 
 exports.getVoteResults = async (req, res, next) => {
