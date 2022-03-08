@@ -44,6 +44,7 @@
     "moment": "^2.24.0",
     "mongodb": "^4.4.0",
     "mongoose": "^6.2.2",
+    "mongoose-deep-populate": "^3.2.0",
     "multer": "^1.4.4",
     "node-sass": "^7.0.1",
     "nodemailer": "^6.7.2",

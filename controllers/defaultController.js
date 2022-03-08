@@ -2,8 +2,10 @@ const Service = require('../models/service');
 const Inquiry = require('../models/inquiry');
 const Schedule = require('../models/schedule');
 const Vote = require('../models/vote');
+const VoteData = require('../models/voteData');
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
+const User = require('../models/user');
 
 exports.getIndex = (req, res, next) => {
     res.render('default/index', {
@@ -125,6 +127,34 @@ exports.getScheduleHistory = async (req, res, next) => {
     }
 }
 
+exports.getVoteHistory = async (req, res, next) => {
+    try {
+        const [votes] = await User.find({ _id: req.user._id })
+            .populate({
+                path: 'data',
+                populate: {
+                    path: 'vote',
+                    populate: {
+                        path: 'voteDataId',
+                        model: 'Vote'
+                    }
+                }
+            })
+        const voteData = votes.data.vote;
+        
+        return res.render('default/profile/profile-vote-history', {
+            pageTitle: 'vote History',
+            votes: voteData,
+            path: '/',
+            isAuth: req.session.isLoggedIn
+        })
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
+
 
 exports.getSettings = async (req, res, next) => {
     if (!req.session.isLoggedIn) {
@@ -165,19 +195,24 @@ exports.getVotes = async (req, res, next) => {
 
 
 exports.getVotesDetails = async (req, res, next) => {
-    if (!req.session.adminIsLoggedIn) {
-        return res.redirect('/admin/login');
+    if (!req.session.isLoggedIn) {
+        return res.redirect('/login');
     }
-
     const voteId = req.params.voteId;
-
+    let alreadyVoted;
     try {
         const vote = await Vote.findById(voteId);
-        console.log(vote);
+        const [voteData] = await VoteData.find({ "voteId": mongoose.Types.ObjectId(voteId) })
+            .populate('voteId');
+
+        if (voteData) {
+            alreadyVoted = voteData.votees.find(votee => votee.toString() === req.user._id.toString());
+        }
         return res.render('default/vote/vote-details', {
             pageTitle: 'Vote Details',
             path: '/',
             vote,
+            alreadyVoted,
             isAuth: req.session.isLoggedIn
         })
     } catch (error) {
@@ -187,6 +222,8 @@ exports.getVotesDetails = async (req, res, next) => {
     }
 
 }
+
+
 
 exports.getVoteResults = async (req, res, next) => {
     if (!req.session.isLoggedIn) {
@@ -198,6 +235,83 @@ exports.getVoteResults = async (req, res, next) => {
         path: '/',
         isAuth: req.session.isLoggedIn
     })
+}
+
+
+exports.postVoted = async (req, res, next) => {
+    const voteId = mongoose.Types.ObjectId(req.body.voteId);
+    let vote;
+    let selectedVote;
+    const voteCount = Array(3).fill(0);
+    const date = new Date().toDateString();
+
+    const [existingVote] = await VoteData.find({ "voteId": voteId }).populate('voteId');
+    const [voteDetails] = await Vote.find(voteId);
+    try {
+        if (existingVote) {
+            if (+req.body.vote === 0) {
+                vote = +req.body.vote;
+                selectedVote = +req.body.vote;
+                existingVote.voteCount[0]++
+            } else if (+req.body.vote === 1) {
+                vote = +req.body.vote;
+                selectedVote = +req.body.vote;
+                existingVote.voteCount[1]++
+            } else {
+                vote = +req.body.vote;
+                selectedVote = +req.body.vote;
+                existingVote.voteCount[2]++
+            }
+            existingVote.votees.push(req.user._id);
+            const results = await existingVote.save();
+            const existingUserVote = results.votees.find(user => user.toString() === req.user._id.toString());
+            if (!existingUserVote) await req.user.addVote(voteDetails, selectedVote, date);
+
+            return res.render('default/vote/vote-results', {
+                pageTitle: 'Vote Results',
+                path: '/',
+                voteResults: existingVote,
+                isAuth: req.session.isLoggedIn
+            })
+        } else {
+
+            if (+req.body.vote === 0) {
+                vote = +req.body.vote;
+                selectedVote = +req.body.vote;
+                voteCount[0]++
+            } else if (+req.body.vote === 1) {
+                vote = +req.body.vote;
+                selectedVote = +req.body.vote;
+                voteCount[1]++
+            } else {
+                vote = +req.body.vote;
+                selectedVote = +req.body.vote;
+                voteCount[2]++
+            }
+            const votees = [];
+            votees.push(req.user._id);
+
+            const voteData = new VoteData({
+                votees,
+                voteCount,
+                voteId
+            })
+            const displayResult = await voteData.save()
+            await displayResult.populate('voteId')
+            await req.user.addVote(voteDetails, selectedVote, date);
+
+            return res.render('default/vote/vote-results', {
+                pageTitle: 'Vote Results',
+                path: '/',
+                voteResults: displayResult,
+                isAuth: req.session.isLoggedIn
+            })
+        }
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
 }
 
 exports.postSettings = async (req, res, next) => {
@@ -214,7 +328,6 @@ exports.postSettings = async (req, res, next) => {
             const newHashedPassword = await bcrypt.hash(updatedPassword, 12);
             req.user.password = newHashedPassword;
         }
-
         const result = await req.user.save();
         console.log(`USER UPDATED`, result);
         return res.redirect('/profile/settings');

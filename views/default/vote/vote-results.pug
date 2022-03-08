@@ -10,11 +10,13 @@ head
   canvas#myChart(class="canvas")
 
 script.
-  var xValues = ["General Cleaning", "Feeding Program", "Work Seminars"];
-  var yValues = [100, 49, 44, 24, 15];
+  var voteResults = !{JSON.stringify(voteResults)}
+  console.log(voteResults)
+  var xValues = [...voteResults.voteId.choices];
+  var yValues = [...voteResults.voteCount, ];
   var barColors = ["violet", "pink","cyan"];
-  new Chart("myChart", {
-  type: "bar",
+  new Chart("myChart", {  
+  type: "pie",
   data: {
   labels: xValues,
   datasets: [{
@@ -26,7 +28,7 @@ script.
   legend: {display: false},
   title: {
   display: true,
-  text: "Barangay Project for May 2022"
+  text: voteResults.voteId.title
   }
   }
   });

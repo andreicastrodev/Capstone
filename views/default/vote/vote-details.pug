@@ -14,24 +14,30 @@ main
     .row
       .book
         .book__form
-          form.form(action='#')
+          form.form(action='/vote/voted', method="POST")
             .u-margin-bottom-medium
               h2.heading-secondary= vote.title
             .form__group.u-margin-bottom-medium
               .form__radio-group
-                input#vote1.form__radio-input(type='radio' name='vote')
+                input#vote1.form__radio-input(type='radio' value="0" name='vote')
                 label.form__radio-label(for='vote1')
                   span.form__radio-button
                   =  vote.choices[0]
               .form__radio-group
-                input#vote2.form__radio-input(type='radio' name='vote')
+                input#vote2.form__radio-input(type='radio' value="1" name='vote')
                 label.form__radio-label(for='vote2')
                   span.form__radio-button
                   = vote.choices[1]
               .form__radio-group
-                input#vote3.form__radio-input(type='radio' name='vote')
+                input#vote3.form__radio-input(type='radio' value="2" name='vote')
                 label.form__radio-label(for='vote3')
                   span.form__radio-button
                   = vote.choices[2]
             .form__group
-              button.btn.btn--green Vote now!
+              input(type="hidden" name="voteId" value=`${vote._id}`)
+              input(type="hidden" name="voteDetailsData" value=`${vote}`)
+            if(alreadyVoted)             
+              button.btn.btn--green(type="submit", disabled="true") You already Voted!
+            else 
+              button.btn.btn--green(type="submit") Vote now!
+      

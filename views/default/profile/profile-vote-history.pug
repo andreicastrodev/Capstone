@@ -1,0 +1,33 @@
+include ../../includes/profile/profile-head.pug
+
+.container-scroller
+  include ../../includes/profile/profile-navbar-up.pug
+  .container-fluid.page-body-wrapper
+    include ../../includes/profile/profile-navbar-side.pug
+    .main-panel
+      .content-wrapper
+        .row
+          .col-lg-12.grid-margin.stretch-card
+            .card
+              .card-body
+                h4.card-title Vote History
+                .table-responsive
+                  each vote in votes
+                    table.table.table-striped
+                      thead
+                        tr
+                          th Title
+                          th Voted for
+                          th Date
+                        tbody
+                          tr
+                            td= vote.voteDataId.title                               
+                            td= vote.voteDataId.choices[vote.selectedVote]
+                            td= vote.date
+
+            
+
+
+
+ 
+include ../../includes/admin/admin-scripts.pug

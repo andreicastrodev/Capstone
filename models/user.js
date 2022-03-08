@@ -33,6 +33,21 @@ const userSchema = new Schema({
         ref: 'Schedule',
         required: true
       }
+    }],
+    vote: [{
+      voteDataId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Vote',
+        required: true
+      },
+      selectedVote: {
+        type: Number,
+        required: true
+      },
+      date: {
+        type: String,
+        required: true
+      }
     }]
   }
 });
@@ -60,6 +75,23 @@ userSchema.methods.addSchedule = function (schedule) {
   this.data.schedule = updatedSchedules
   return this.save();
 }
+
+
+userSchema.methods.addVote = function (vote, selectedVote,date) {
+  const updatedVotes = [...this.data.vote];
+
+  updatedVotes.push({
+    voteDataId: vote._id,
+    selectedVote,
+    date,
+  })
+
+  this.data.vote = updatedVotes;
+  return this.save();
+}
+
+
+
 
 userSchema.methods.removeInquiry = function (inquiryId) {
 
