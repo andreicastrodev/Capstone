@@ -14,8 +14,12 @@ const voteSchema = new Schema({
   choices: {
     type: [],
     required: true
+  }, 
+  isClosed: {
+    type: Boolean,
+    required: true
   },
- 
+
 });
 
 module.exports = mongoose.model('Vote', voteSchema);

@@ -1,9 +1,9 @@
-include ../../includes/profile/profile-head.pug
+include ../../includes/admin/admin-head.pug
 
 .container-scroller
-  include ../../includes/profile/profile-navbar-up.pug
+  include ../../includes/admin/admin-navbar-up.pug
   .container-fluid.page-body-wrapper
-    include ../../includes/profile/profile-navbar-side.pug
+    include ../../includes/admin/admin-navbar-side.pug
     .main-panel
       .content-wrapper
         .row
@@ -16,16 +16,16 @@ include ../../includes/profile/profile-head.pug
                     table.table.table-striped
                       thead
                         tr
+                          th Name
                           th Title
                           th Voted for
                           th Date
-                          th Status
                         tbody
                           tr
+                            td= userData.name
                             td= vote.voteDataId.title                               
                             td= vote.voteDataId.choices[vote.selectedVote]
                             td= vote.date
-                            td= vote.isClosed ? 'Open' : 'Closed'
 
             
 

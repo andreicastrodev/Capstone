@@ -36,8 +36,12 @@ main
             .form__group
               input(type="hidden" name="voteId" value=`${vote._id}`)
               input(type="hidden" name="voteDetailsData" value=`${vote}`)
-            if(alreadyVoted)             
+            if (alreadyVoted && !vote.isClosed)             
               button.btn.btn--green(type="submit", disabled="true") You already Voted!
+            else if(vote.isClosed && alreadyVoted)
+              button.btn.btn--green(type="submit", disabled="true") This Poll is Closed!
+            else if(vote.isClosed)
+              button.btn.btn--green(type="submit", disabled="true") This Poll is Closed!
             else 
               button.btn.btn--green(type="submit") Vote now!
       

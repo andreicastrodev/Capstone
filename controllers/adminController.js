@@ -3,9 +3,11 @@ const Inquiry = require('../models/inquiry');
 const Schedule = require('../models/schedule');
 const User = require('../models/user');
 const Vote = require('../models/vote');
+const VoteData = require('../models/voteData');
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const sendgridTransport = require('nodemailer-sendgrid-transport');
+const mongoose = require('mongoose');
 
 const transporter = nodemailer.createTransport(
     sendgridTransport({
@@ -157,6 +159,30 @@ exports.getManageUser = async (req, res, next) => {
     }
 }
 
+exports.getManageVote = async (req, res, next) => {
+    if (!req.session.adminIsLoggedIn) {
+        return res.redirect('/admin/login');
+    }
+    try {
+        const voteData = await VoteData.find().populate('voteId');
+
+        console.log(voteData);
+
+        res.render('admin/vote/manage-vote', {
+            pageTitle: 'Manage Votes',
+            voteData,
+            path: '',
+        })
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
+
+
+
+
 
 exports.getAdminSettings = async (req, res, next) => {
     const adminDetails = req.admin;
@@ -272,7 +298,7 @@ exports.getCreateVote = (req, res, next) => {
     }
     try {
 
-       return res.render('admin/vote/create-vote', {
+        return res.render('admin/vote/create-vote', {
             pageTitle: 'Create Vote',
             path: '',
         })
@@ -283,6 +309,35 @@ exports.getCreateVote = (req, res, next) => {
     }
 }
 
+exports.getVoteHistory = async (req, res, next) => {
+    try {
+        const [votes] = await User.find()
+            .populate({
+                path: 'data',
+                populate: {
+                    path: 'vote',
+                    populate: {
+                        path: 'voteDataId',
+                        model: 'Vote'
+                    }
+                }
+            })
+        const voteData = votes.data.vote;
+        const userData = votes;
+        console.log(userData);
+        return res.render('admin/vote/vote-history', {
+            pageTitle: 'Vote History',
+            votes: voteData,
+            userData,
+            path: '/',
+            isAuth: req.session.isLoggedIn
+        })
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
 
 
 
@@ -296,7 +351,8 @@ exports.postCreateVote = async (req, res, next) => {
     const vote = new Vote({
         title,
         choices: [choice1, choice2, choice3],
-        description
+        description,
+        isClosed: false
     });
     try {
         const result = await vote.save();
@@ -414,4 +470,38 @@ exports.postDeleteSchedule = async (req, res, next) => {
         err.httpStatusCode = 500;
         return next(err);
     }
+}
+
+
+
+exports.postViewVote = async (req, res, next) => {
+    const voteDataId = req.body.voteDataId
+    const [voteData] = await VoteData.find(mongoose.Types.ObjectId(voteDataId)).populate('voteId');
+    console.log(voteData)
+    return res.render('default/vote/vote-results', {
+        pageTitle: 'Vote Results',
+        path: '/',
+        voteResults: voteData,
+        isAuth: req.session.isLoggedIn
+    })
+}
+
+exports.postCloseVote = async(req,res,next) =>{
+    const voteId = req.body.voteId;
+
+
+    try {
+        const vote = await Vote.findById(voteId);
+
+        console.log(vote);
+
+        vote.isClosed = true;
+        await vote.save();
+        return res.redirect('/admin/manage-vote')
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+
 }

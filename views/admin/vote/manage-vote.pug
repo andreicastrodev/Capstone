@@ -1,0 +1,46 @@
+include ../../includes/admin/admin-head.pug
+
+.container-scroller
+  include ../../includes/admin/admin-navbar-up.pug
+  .container-fluid.page-body-wrapper
+    include ../../includes/admin/admin-navbar-side.pug
+    .main-panel
+      .content-wrapper
+        .row
+          .col-lg-12.grid-margin.stretch-card
+            .card
+              .card-body
+                h4.card-title Manage Schedule
+                .table-responsive
+                  each vote in voteData
+                    - var index = vote.voteCount.indexOf(Math.max(...vote.voteCount));
+                    table.table.table-striped
+                      thead
+                        tr
+                          th Title 
+                          th Number of Voters
+                          th Most Voted
+                          th Status
+                          th Actions 
+                          tn
+                        tbody
+                          tr
+                            td= vote.voteId.title
+                            td= vote.votees.length
+                            td= vote.voteId.choices[index]
+                            td= vote.voteId.isClosed ? 'Closed' : 'Open'
+                            td
+                             form(action="/admin/manage-vote/view-vote",method="POST")
+                                input(type="hidden", value=`${vote._id}`   name="voteDataId")
+                                button.btn.btn-dark.btn-icon-text(type='submit') View 
+
+                            td
+                             form(action="/admin/manage-vote/close-vote" ,method="POST")
+                                input(type="hidden", value=`${vote.voteId._id}`  name="voteId")
+                                if(vote.voteId.isClosed)
+                                 button.btn.btn-danger(type='submit' disabled=`true`) Close 
+                                else 
+                                 button.btn.btn-danger(type='submit') Close 
+
+ 
+include ../../includes/admin/admin-scripts.pug
