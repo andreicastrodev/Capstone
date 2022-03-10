@@ -4,6 +4,7 @@ const Schedule = require('../models/schedule');
 const User = require('../models/user');
 const Vote = require('../models/vote');
 const VoteData = require('../models/voteData');
+const News = require('../models/news');
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const sendgridTransport = require('nodemailer-sendgrid-transport');
@@ -45,7 +46,66 @@ exports.getIndex = async (req, res, next) => {
         return next(err);
     }
 
+
 }
+
+exports.getCreateNews = (req, res, next) => {
+    if (!req.session.adminIsLoggedIn) {
+        return res.redirect('/admin/login');
+    }
+    res.render('admin/news/create-news', {
+        pageTitle: 'Create News',
+        path: '/'
+    })
+}
+
+exports.getManageNews = async (req, res, next) => {
+    if (!req.session.adminIsLoggedIn) {
+        return res.redirect('/admin/login');
+    }
+
+
+    try {
+        const news = await News.find();
+        console.log(news);
+
+        return res.render('admin/news/manage-news', {
+            pageTitle: 'Manage News',
+            newsData: news,
+            path: '/'
+        })
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
+
+
+
+
+exports.getEditNews = async (req, res, next) => {
+    if (!req.session.adminIsLoggedIn) {
+        return res.redirect('/admin/login');
+    }
+    const newsId = req.params.newsId;
+
+    try {
+        const news = await News.findById(newsId);
+
+        return res.render('admin/news/edit-news', {
+            pageTitle: 'Edit News',
+            news,
+            path: '/'
+        })
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+
+}
+
 
 exports.getCreateService = (req, res, next) => {
     if (!req.session.adminIsLoggedIn) {
@@ -215,6 +275,69 @@ exports.postAdminSettings = async (req, res, next) => {
         return next(err);
     }
 }
+
+
+exports.postCreateNews = async (req, res, next) => {
+
+    const title = req.body.title;
+    const content = req.body.content;
+    const date = new Date().toDateString();
+
+    const news = new News({
+        title,
+        content,
+        date
+    })
+    try {
+        const results = await news.save();
+
+        console.log(results);
+
+        return res.redirect('/admin/manage-news');
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
+
+exports.postEditNews = async (req, res, next) => {
+    const newsId = req.body.newsId
+    const newTitle = req.body.title;
+    const newContent = req.body.content;
+
+    try {
+        const news = await News.findById(newsId);
+        news.title = newTitle;
+        news.content = newContent;
+        const result = await news.save();
+        console.log(result)
+        return res.redirect('/admin/manage-news');
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+}
+
+exports.postDeleteNews = async (req, res, next) => {
+    const newsId = req.body.newsId;
+
+
+    try {
+        await News.deleteOne({ _id: newsId });
+        console.log('news delete')
+        return res.redirect('/admin/manage-news');
+
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+
+
+}
+
 
 exports.postCreateService = async (req, res, next) => {
     const title = req.body.title;
@@ -486,7 +609,7 @@ exports.postViewVote = async (req, res, next) => {
     })
 }
 
-exports.postCloseVote = async(req,res,next) =>{
+exports.postCloseVote = async (req, res, next) => {
     const voteId = req.body.voteId;
 
 

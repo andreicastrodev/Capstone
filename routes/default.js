@@ -3,6 +3,7 @@ const router = express.Router()
 const defaultController = require('../controllers/defaultController')
 
 router.get('/', defaultController.getIndex);
+router.get("/news/:newsId", defaultController.getNews);
 router.get('/services', defaultController.getServices);
 router.get('/services/:serviceId', defaultController.getServicesDetail);
 router.get('/inquiry', defaultController.getInquiry);

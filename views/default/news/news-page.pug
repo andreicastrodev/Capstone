@@ -1,0 +1,23 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  meta(http-equiv='X-UA-Compatible' content='ie=edge')
+  link(href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900' rel='stylesheet')
+  link(rel='stylesheet' href='/css/icon-font.css')
+  link(rel='stylesheet' href='/css/style.css')  
+  title Capstone Project
+include ../../includes/navigation-bar.pug
+main
+  section.section-about
+    .u-center-text.u-margin-bottom-big
+      h2.heading-secondary Latest News
+    .row
+      .col-3-of-4
+          div
+            h3.heading-tertiary.u-margin-bottom-small= news.title
+            p.paragraph= news.content
+footer.footer
+  .row
+    .col-3-of-4
+      p.footer__copyright andreicastrodev@github.com  / developed for capstone 2

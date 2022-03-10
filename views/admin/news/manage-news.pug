@@ -10,28 +10,26 @@ include ../../includes/admin/admin-head.pug
           .col-lg-12.grid-margin.stretch-card
             .card
               .card-body
-                h4.card-title Manage Services
+                h4.card-title= pageTitle
                 .table-responsive
-                  each service in services
+                  each news in newsData
                     table.table.table-striped
                       thead
                         tr
-                          th Service Name
-                          th Location
+                          th Title
+                          th Date Created
                         tbody
                           tr
-                            td= service.title
-                                
-                            td= service.location
-                            
+                            td= news.title                                
+                            td= news.date                           
                             td
-                              a(href=`/admin/edit-service/${service._id}`) 
+                              a(href=`/admin/manage-news/edit-news/${news._id}`) 
                                 button.btn.btn-dark.btn-icon-text(type='button')
                                     | Edit
                                     i.ti-file.btn-icon-append
                             td
-                              form(action="/admin/delete-service",method="POST")
-                                input(type="hidden", value=`${service._id}`, name="serviceId")
+                              form(action="/admin/manage-news/delete-news",method="POST")
+                                input(type="hidden", value=`${news._id}`, name="newsId")
                                 button.btn.btn-danger(type='submit') Delete 
 
 

@@ -6,13 +6,50 @@ const VoteData = require('../models/voteData');
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 const User = require('../models/user');
+const News = require('../models/news');
 
-exports.getIndex = (req, res, next) => {
-    res.render('default/index', {
-        pageTitle: 'Group 4',
-        path: '/',
-        isAuth: req.session.isLoggedIn
-    })
+exports.getIndex = async (req, res, next) => {
+
+    try {
+
+        const news = await News.find();
+        console.log(news)
+        res.render('default/index', {
+            pageTitle: 'Group 4',
+            path: '/',
+            newsData: news,
+            isAuth: req.session.isLoggedIn
+        })
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+
+
+}
+
+
+exports.getNews = async (req, res, next) => {
+
+    const newsId = req.params.newsId;
+
+
+    try {
+        const news = await News.findById(newsId);
+        res.render('default/news/news-page', {
+            pageTitle: 'News page',
+            path: '/',
+            news,
+            isAuth: req.session.isLoggedIn
+        })
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+
+
 }
 
 exports.getServices = async (req, res, next) => {
@@ -141,7 +178,7 @@ exports.getVoteHistory = async (req, res, next) => {
                 }
             })
         const voteData = votes.data.vote;
-        
+
         return res.render('default/profile/profile-vote-history', {
             pageTitle: 'vote History',
             votes: voteData,

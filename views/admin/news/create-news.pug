@@ -1,0 +1,25 @@
+include ../../includes/admin/admin-head.pug
+
+.container-scroller
+  include ../../includes/admin/admin-navbar-up.pug
+  .container-fluid.page-body-wrapper
+    include ../../includes/admin/admin-navbar-side.pug
+    .main-panel
+      .content-wrapper
+        .row
+          .col-12.grid-margin.stretch-card
+            .card
+              .card-body
+                h4.card-title Create News
+                form.forms-sample(action="/admin/create-news/", method="POST")
+                  .form-group
+                    label(for='exampleInputName1') Title
+                    input#exampleInputName1.form-control(type='text' name="title" placeholder='title')
+                  .form-group
+                    label(for='exampleTextarea1') Content
+                    textarea#exampleTextarea1.form-control(rows='4', name="content")
+                  button.btn.btn-primary.mr-2(type='submit') Submit
+
+
+ 
+include ../../includes/admin/admin-scripts.pug

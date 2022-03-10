@@ -1,0 +1,26 @@
+include ../../includes/admin/admin-head.pug
+
+.container-scroller
+  include ../../includes/admin/admin-navbar-up.pug
+  .container-fluid.page-body-wrapper
+    include ../../includes/admin/admin-navbar-side.pug
+    .main-panel
+      .content-wrapper
+        .row
+          .col-12.grid-margin.stretch-card
+            .card
+              .card-body
+                h4.card-title Edit News
+                form.forms-sample(action="/admin/manage-news/edit-news", method="POST")
+                  .form-group
+                    label(for='exampleInputName1') Title
+                    input(type="hidden" value=news._id, name="newsId")
+                    input#exampleInputName1.form-control(type='text' value=news.title name="title" placeholder='title')
+                  .form-group
+                    label(for='exampleTextarea1') Content
+                    textarea#exampleTextarea1.form-control(rows='4', name="content")=news.content
+                  button.btn.btn-primary.mr-2(type='submit') Submit
+
+
+ 
+include ../../includes/admin/admin-scripts.pug
