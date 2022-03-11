@@ -9,18 +9,20 @@ head
 
 main.main
     .singup-form
+        if (errorMessage)
+          div(class="user-message user-message--error")= errorMessage
         h2.heading-secondary.ma-bt-lg create your account!
-        form.form.form--signup(action="/sign-up", method="POST")
+        form.form.form--signup(action="/sign-up", method="POST" novalidate)
             .form__group
                 label.form__label(for='name') Your name
-                input#name.form__input(type='text', name="name", placeholder='')
+                input#name.form__input(type='text', name="name", value=oldInput.name placeholder='')
             .form__group
                 label.form__label(for='email') Email address
-                input#email.form__input(type='email', name="email",   place
+                input#email.form__input(type='email', name="email", value=oldInput.email   place
                 holder='you@example.com')
             .form__group
                 label.form__label(for='email') Mobile Number
-                input.form__input(type='number', name="mobileNumber" , place
+                input.form__input(type='number', name="mobileNumber", value=oldInput.mobileNumber place
                 holder='0000000000')                
             .form__group.ma-bt-md
                   label.form__label(for='password') Password

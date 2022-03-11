@@ -1429,3 +1429,22 @@ width: 225px;
 }
 
 
+.user-message {
+  margin: auto;
+  width: 90%;
+  border: 1px solid #4771fa;
+  padding: 0.5rem;
+  border-radius: 3px;
+  background: #b9c9ff;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+
+}
+
+.user-message--error {
+  border-color: #DC143C;
+  background: rgb(255, 176, 176);
+  color: #DC143C;
+}

@@ -1,10 +1,15 @@
 const User = require('../models/user')
 const Admin = require('../models/admin');
 const bcrypt = require('bcryptjs');
+const { validationResult } = require('express-validator/check');
+
 exports.getLogin = (req, res, next) => {
   res.render('auth/login', {
     pageTitle: 'Login',
     path: '/login',
+    oldInput: {
+      email: ''
+    },
     isAuth: req.session.isLoggedIn
   });
 };
@@ -13,6 +18,11 @@ exports.getSignup = (req, res, next) => {
   res.render('auth/sign-up', {
     pageTitle: 'Signup',
     path: '/signup',
+    oldInput: {
+      name: '',
+      email: '',
+      mobileNumber: '',
+    },
     isAuth: req.session.isLoggedIn
   });
 };
@@ -57,6 +67,22 @@ exports.postSignup = async (req, res, next) => {
   const email = req.body.email;
   const mobileNumber = req.body.mobileNumber;
   const password = req.body.password;
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    console.log(errors.array());
+    return res.status(422).render('auth/sign-up', {
+      pageTitle: 'Signup',
+      path: '/signup',
+      errorMessage: errors.array()[0].msg,
+      oldInput: {
+        name,
+        email,
+        mobileNumber,
+      },
+      isAuth: req.session.isLoggedIn
+    });
+  }
 
   try {
     const hashedPassword = await bcrypt.hash(password, 12);
@@ -83,6 +109,20 @@ exports.postLogin = async (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
 
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    console.log(errors.array());
+    return res.status(422).render('auth/login', {
+      pageTitle: 'Login',
+      path: '/login',
+      errorMessage: errors.array()[0].msg,
+      oldInput: {
+        email,
+      },
+      isAuth: req.session.isLoggedIn
+    });
+  }
 
   try {
     const user = await User.findOne({ email: email })

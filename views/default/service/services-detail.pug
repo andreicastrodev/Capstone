@@ -28,6 +28,8 @@ section.section-description
     div
       .overview-box__group
         h2.heading-secondary.ma-bt-lg Select your prefered date for your schedule!
+        if (errorMessage)
+          div(class="user-message user-message--error")= errorMessage
         .overview-box__detail
           form(action="/service-schedule", method="POST")
             label.overview-box__label Date

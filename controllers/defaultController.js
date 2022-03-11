@@ -7,6 +7,7 @@ const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 const User = require('../models/user');
 const News = require('../models/news');
+const { validationResult } = require('express-validator/check');
 
 exports.getIndex = async (req, res, next) => {
 
@@ -33,8 +34,6 @@ exports.getIndex = async (req, res, next) => {
 exports.getNews = async (req, res, next) => {
 
     const newsId = req.params.newsId;
-
-
     try {
         const news = await News.findById(newsId);
         res.render('default/news/news-page', {
@@ -103,6 +102,10 @@ exports.getInquiry = (req, res, next) => {
     res.render('default/inquiry/inquiry', {
         pageTitle: 'Inquiry',
         path: '/',
+        oldInput: {
+            subject: '',
+            message: ''
+        },
         isAuth: req.session.isLoggedIn
     })
 }
@@ -380,7 +383,21 @@ exports.postInquiry = async (req, res, next) => {
     const subject = req.body.subject;
     const message = req.body.message;
     const date = new Date().toDateString();
-    console.log(date)
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        console.log(errors.array());
+        return res.status(422).render('default/inquiry/inquiry', {
+            pageTitle: 'Inquiry',
+            path: '/Inquiry',
+            errorMessage: errors.array()[0].msg,
+            oldInput: {
+                subject,
+                message
+            },
+            isAuth: req.session.isLoggedIn
+        });
+    }
     const inquiry = new Inquiry({
         subject,
         message,
@@ -404,6 +421,7 @@ exports.postServiceSchedule = async (req, res, next) => {
 
     const date = req.body.date;
     const serviceId = mongoose.Types.ObjectId(req.body.serviceId);
+
     const schedule = new Schedule({
         date,
         status: 'Pending',

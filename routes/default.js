@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const defaultController = require('../controllers/defaultController')
+const { check } = require('express-validator/check');
 
 router.get('/', defaultController.getIndex);
 router.get("/news/:newsId", defaultController.getNews);
@@ -16,7 +17,12 @@ router.get('/votes', defaultController.getVotes);
 router.get('/votes/:voteId', defaultController.getVotesDetails);
 router.get('/vote/vote-results', defaultController.getVoteResults);
 router.post('/vote/voted', defaultController.postVoted);
-router.post('/inquiry', defaultController.postInquiry);
+router.post('/inquiry', [
+    check('subject', 'Subject character must be greater than 10')
+        .isLength({ min: 10 }),
+    check('message', 'Message must be longer than 20 characters')
+        .isLength({ min: 20 })
+], defaultController.postInquiry);
 router.post('/service-schedule', defaultController.postServiceSchedule);
 router.post('/profile/update-settings', defaultController.postSettings);
 module.exports = router;
