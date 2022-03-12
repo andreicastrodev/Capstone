@@ -11,6 +11,8 @@ include ../../includes/admin/admin-head.pug
             .card
               .card-body
                 h4.card-title Edit News
+                if (errorMessage)
+                  div(class="user-message user-message--error")= errorMessage
                 form.forms-sample(action="/admin/manage-news/edit-news", method="POST")
                   .form-group
                     label(for='exampleInputName1') Title

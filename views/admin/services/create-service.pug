@@ -11,10 +11,12 @@ include ../../includes/admin/admin-head.pug
             .card
               .card-body
                 h4.card-title Create Services
+                if (errorMessage)
+                  div(class="user-message user-message--error")= errorMessage
                 form.forms-sample(action="/admin/create-service/", method="POST", enctype="multipart/form-data")
                   .form-group
                     label(for='exampleInputName1') Title
-                    input#exampleInputName1.form-control(type='text' name="title" placeholder='title')
+                    input#exampleInputName1.form-control(type='text' name="title" value=oldInput.title placeholder='title')
                   .form-group
                     label Upload Image
                     input#image.file-upload-default(type='file')
@@ -24,10 +26,10 @@ include ../../includes/admin/admin-head.pug
                         button.file-upload-browse.btn.btn-primary(type='button') Upload
                   .form-group
                     label(for='exampleInputCity1') Location
-                    input#exampleInputCity1.form-control(type='text', name="location", placeholder='Location')
+                    input#exampleInputCity1.form-control(type='text', name="location", value=oldInput.location placeholder='Location')
                   .form-group
                     label(for='exampleTextarea1') Description
-                    textarea#exampleTextarea1.form-control(rows='4', name="description")
+                    textarea#exampleTextarea1.form-control(rows='4',  name="description")=oldInput.description
                   button.btn.btn-primary.mr-2(type='submit') Submit
 
 

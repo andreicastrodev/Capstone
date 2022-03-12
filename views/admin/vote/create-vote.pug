@@ -11,22 +11,24 @@ include ../../includes/admin/admin-head.pug
             .card
               .card-body
                 h4.card-title= pageTitle
+                if (errorMessage)
+                  div(class="user-message user-message--error")= errorMessage
                 form.forms-sample(action="/admin/create-vote/", method="POST")
                   .form-group
                     label(for='exampleInputName1') Title
-                    input#exampleInputName1.form-control(type='text' name="title" placeholder='title')
+                    input#exampleInputName1.form-control(type='text' name="title" value=oldInput.title placeholder='title')
                   .form-group
                     label(for='exampleInputCity1') Choice 1
-                    input#exampleInputCity1.form-control(type='text', name="choice1", placeholder='choice1')
+                    input#exampleInputCity1.form-control(type='text', name="choice1" , value=oldInput.choice1 placeholder='choice1')
                   .form-group
                     label(for='exampleInputCity1') Choice 2
-                    input#exampleInputCity1.form-control(type='text', name="choice2", placeholder='choice2')
+                    input#exampleInputCity1.form-control(type='text', name="choice2", value=oldInput.choice2 placeholder='choice2')
                   .form-group
                     label(for='exampleInputCity1') Choice 3
-                    input#exampleInputCity1.form-control(type='text', name="choice3", placeholder='choice3')
+                    input#exampleInputCity1.form-control(type='text', name="choice3", value=oldInput.choice3 placeholder='choice3')
                   .form-group
                     label(for='exampleTextarea1') Description
-                    textarea#exampleTextarea1.form-control(rows='4', name="description")
+                    textarea#exampleTextarea1.form-control(rows='4', name="description")=oldInput.description
                   button.btn.btn-primary.mr-2(type='submit') Create
 
 

@@ -9,6 +9,7 @@ const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const sendgridTransport = require('nodemailer-sendgrid-transport');
 const mongoose = require('mongoose');
+const { validationResult } = require('express-validator/check');
 
 const transporter = nodemailer.createTransport(
     sendgridTransport({
@@ -55,6 +56,10 @@ exports.getCreateNews = (req, res, next) => {
     }
     res.render('admin/news/create-news', {
         pageTitle: 'Create News',
+        oldInput: {
+            title: '',
+            content: '',
+        },
         path: '/'
     })
 }
@@ -113,6 +118,11 @@ exports.getCreateService = (req, res, next) => {
     }
     res.render('admin/services/create-service', {
         pageTitle: 'Create Service',
+        oldInput: {
+            title: '',
+            location: '',
+            description: ""
+        },
         path: '/'
     })
 }
@@ -282,7 +292,20 @@ exports.postCreateNews = async (req, res, next) => {
     const title = req.body.title;
     const content = req.body.content;
     const date = new Date().toDateString();
+    const errors = validationResult(req);
 
+    if (!errors.isEmpty()) {
+        console.log(errors.array());
+        return res.status(422).render('admin/news/create-news', {
+            pageTitle: 'Create News',
+            errorMessage: errors.array()[0].msg,
+            oldInput: {
+                title,
+                content,
+            },
+            isAuth: req.session.isLoggedIn
+        });
+    }
     const news = new News({
         title,
         content,
@@ -344,6 +367,21 @@ exports.postCreateService = async (req, res, next) => {
     const location = req.body.location;
     const description = req.body.description;
     const image = req.file;
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        console.log(errors.array());
+        return res.status(422).render('admin/services/create-service', {
+            pageTitle: 'Create Service',
+            errorMessage: errors.array()[0].msg,
+            oldInput: {
+                title,
+                location,
+                description
+            },
+            isAuth: req.session.isLoggedIn
+        });
+    }
 
     console.log(image)
     if (!image) {
@@ -420,9 +458,15 @@ exports.getCreateVote = (req, res, next) => {
         return res.redirect('/admin/login');
     }
     try {
-
         return res.render('admin/vote/create-vote', {
             pageTitle: 'Create Vote',
+            oldInput: {
+                title: '',
+                choice1: '',
+                choice2: '',
+                choice3: "",
+                description: ''
+            },
             path: '',
         })
     } catch (error) {
@@ -470,7 +514,23 @@ exports.postCreateVote = async (req, res, next) => {
     const choice2 = req.body.choice2;
     const choice3 = req.body.choice3;
     const description = req.body.description;
+    const errors = validationResult(req);
 
+    if (!errors.isEmpty()) {
+        console.log(errors.array());
+        return res.status(422).render('admin/vote/create-vote', {
+            pageTitle: 'Create Votes',
+            errorMessage: errors.array()[0].msg,
+            oldInput: {
+                title,
+                choice1,
+                choice2,
+                choice3,
+                description
+            },
+            isAuth: req.session.isLoggedIn
+        });
+    }
     const vote = new Vote({
         title,
         choices: [choice1, choice2, choice3],
@@ -480,7 +540,7 @@ exports.postCreateVote = async (req, res, next) => {
     try {
         const result = await vote.save();
         console.log('VOTE CREATED', result);
-        return res.redirect('/admin/dashboard');
+        return res.redirect('/admin/vote/manage-vote');
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;

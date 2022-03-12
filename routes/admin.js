@@ -1,7 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const adminController = require('../controllers/adminController')
-
+const { check } = require('express-validator/check');
+const validators = require('../validators/adminValidator');
 router.get('/dashboard', adminController.getIndex);
 router.get('/create-news', adminController.getCreateNews);
 router.get('/manage-news', adminController.getManageNews);
@@ -17,9 +18,9 @@ router.get('/manage-user', adminController.getManageUser);
 router.get('/manage-vote', adminController.getManageVote);
 router.get('/admin-settings', adminController.getAdminSettings);
 router.post('/update-settings', adminController.postAdminSettings);
-router.post('/create-news', adminController.postCreateNews);
-router.post('/create-vote', adminController.postCreateVote);
-router.post('/create-service', adminController.postCreateService);
+router.post('/create-news', validators.validateNews, adminController.postCreateNews);
+router.post('/create-vote', validators.validateVotes, adminController.postCreateVote);
+router.post('/create-service', validators.validateServices, adminController.postCreateService);
 router.post('/edit-service', adminController.postEditService);
 router.post('/delete-service', adminController.postDeleteService);
 router.post('/delete-inquiry', adminController.postDeleteInquiry);
