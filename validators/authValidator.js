@@ -1,5 +1,5 @@
 const { check } = require('express-validator/check');
-
+const User = require('../models/user');
 
 exports.validateSignup = [
     check('name', 'Enter a name greater than 5 characters')
@@ -10,6 +10,7 @@ exports.validateSignup = [
         .custom((value, { req }) => {
             return User.findOne({ email: value })
                 .then(user => {
+                    console.log(user);
                     if (user) {
                         return Promise.reject('Email already exist');
                     }

@@ -12,6 +12,8 @@ include ../../includes/profile/profile-head.pug
               .card-body
                 h4.card-title Inquiry History
                 .table-responsive
+                if inquiries.length === 0
+                  h4.dataMessage You have no Inquiries
                   each inquiry in inquiries
                     table.table.table-striped
                       thead

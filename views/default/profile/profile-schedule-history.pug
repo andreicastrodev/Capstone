@@ -12,6 +12,8 @@ include ../../includes/profile/profile-head.pug
               .card-body
                 h4.card-title Schedule History
                 .table-responsive
+                if schedules.length === 0
+                  h4.dataMessage You have no schedules              
                   each schedule in schedules
                     table.table.table-striped
                       thead
