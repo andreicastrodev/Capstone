@@ -55,7 +55,7 @@ body {
 
 @media only screen and (max-width: 56.25em) {
   .main {
-   padding: 6rem 4rem
+   padding: 6rem 0rem
    
     } 
    }
@@ -1193,7 +1193,19 @@ body {
   box-shadow: 0 2.5rem 8rem 2rem rgba(0, 0, 0, 0.06);
   padding: 5rem 7rem;
   border-radius: 5px;
+
+  
 }
+
+@media only screen and (max-width: 56.25em) {
+  .login-form,
+  .singup-form {
+    padding: 5rem 2rem;
+  
+  } 
+  
+  
+  }
 
 .form__input {
   display: block;

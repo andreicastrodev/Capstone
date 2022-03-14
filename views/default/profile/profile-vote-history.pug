@@ -12,7 +12,8 @@ include ../../includes/profile/profile-head.pug
               .card-body
                 h4.card-title Vote History
                 if votes.length === 0
-                  h4.dataMessage You have no votes                
+                  h4.dataMessage You have no votes 
+                else               
                 .table-responsive
                   each vote in votes
                     table.table.table-striped

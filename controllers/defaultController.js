@@ -110,15 +110,28 @@ exports.getInquiry = (req, res, next) => {
     })
 }
 
-exports.getProfile = (req, res, next) => {
+exports.getProfile = async (req, res, next) => {
     if (!req.session.isLoggedIn) {
         return res.redirect('/login');
     }
-    res.render('default/profile/profile', {
-        pageTitle: 'Profile',
-        path: '/',
-        isAuth: req.session.isLoggedIn
-    })
+
+    const userData = req.user;
+    console.log(userData)
+
+    try {
+        res.render('default/profile/profile', {
+            pageTitle: 'Profile',
+            path: '/',
+            userData,
+            isAuth: req.session.isLoggedIn
+        })
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+
+
 }
 
 

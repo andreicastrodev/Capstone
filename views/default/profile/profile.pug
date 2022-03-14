@@ -10,7 +10,7 @@ include ../../includes/profile/profile-head.pug
           .col-md-12.grid-margin
             .row
               .col-12.col-xl-8.mb-4.mb-xl-0
-                h3.font-weight-bold Welcome Andrei
+                h3.font-weight-bold Welcome #{userData.name}
         .row
           .col-md-6.grid-margin.stretch-card
             .card.tale-bg
@@ -31,24 +31,19 @@ include ../../includes/profile/profile-head.pug
               .col-md-6.mb-4.stretch-card.transparent
                 .card.card-tale
                   .card-body
-                    p.mb-4 Registered Users
-                    p.fs-30.mb-2 4
+                    p.mb-4 Your Inquiries
+                    p.fs-30.mb-2= userData.data.inquiry.length
               .col-md-6.mb-4.stretch-card.transparent
                 .card.card-dark-blue
                   .card-body
-                    p.mb-4 Total Services
-                    p.fs-30.mb-2 10
+                    p.mb-4 Your Schedules
+                    p.fs-30.mb-2= userData.data.schedule.length
             .row
               .col-md-6.mb-4.mb-lg-0.stretch-card.transparent
                 .card.card-light-blue
                   .card-body
-                    p.mb-4 Inquiries 
-                    p.fs-30.mb-2 10
-              .col-md-6.stretch-card.transparent
-                .card.card-light-danger
-                  .card-body
-                    p.mb-4 Issues
-                    p.fs-30.mb-2 4
+                    p.mb-4 Your Votes
+                    p.fs-30.mb-2= userData.data.vote.length
 
  
 include ../../includes/profile/profile-scripts.pug
