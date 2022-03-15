@@ -23,13 +23,25 @@ include ../../includes/profile/profile-head.pug
                           th Location
                           th Date
                           th Status
+                          th Actions
                         tbody
                           tr
                             td= schedule.serviceId.title                            
                             td= schedule.serviceId.location  
                             td= schedule.date
                             td= schedule.status
-            
+                            if (schedule.status === 'Confirmed')
+                              td
+                                a(href=`/profile/schedule/${schedule._id}`) 
+                                  button.btn.btn-dark.btn-icon-text(type='button')
+                                      | Invoice
+                                      i.ti-file.btn-icon-append
+                            else
+                               td
+                                a(href=`/profile/schedule/${schedule._id}`) 
+                                  button.btn.btn-dark.btn-icon-text(type='button' disabled="true")
+                                      | Invoice
+                                      i.ti-file.btn-icon-append             
 
 
 

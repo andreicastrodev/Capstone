@@ -11,6 +11,7 @@ router.get('/inquiry', defaultController.getInquiry);
 router.get('/profile', defaultController.getProfile);
 router.get('/profile/inquiry-history', defaultController.getInquiryHistory)
 router.get('/profile/schedule-history', defaultController.getScheduleHistory);
+router.get('/profile/schedule/:scheduleId', defaultController.getScheduleInvoice);
 router.get('/profile/vote-history', defaultController.getVoteHistory);
 router.get('/profile/settings', defaultController.getSettings);
 router.get('/votes', defaultController.getVotes);

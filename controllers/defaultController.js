@@ -8,7 +8,9 @@ const mongoose = require('mongoose');
 const User = require('../models/user');
 const News = require('../models/news');
 const { validationResult } = require('express-validator/check');
-
+const fs = require('fs');
+const path = require('path')
+const PDFDoc = require('pdfkit')
 exports.getIndex = async (req, res, next) => {
 
     try {
@@ -178,6 +180,105 @@ exports.getScheduleHistory = async (req, res, next) => {
         err.httpStatusCode = 500;
         return next(err);
     }
+}
+
+
+exports.getScheduleInvoice = async (req, res, next) => {
+    const scheduleId = req.params.scheduleId;
+    const invoiceName = 'invoice-' + scheduleId + '.pdf';
+    const invoicePath = path.join('data', 'invoices', invoiceName);
+
+    try {
+        const schedule = await Schedule.findById(scheduleId)
+            .populate('serviceId')
+            .populate('userId')
+        if (!schedule) {
+            return next(new Error('no Schedule found'))
+        }
+        // if (schedule.userId.toString() !== req.user._id.toString()) {
+        //     return next(new Error('Unauthorized'))
+        // }
+        console.log(schedule)
+        const newPdfDoc = new PDFDoc();
+        res.setHeader('Content-type', 'application/pdf');
+        res.setHeader('Content-disposition', 'inline; filename="' + invoiceName + '"');
+        newPdfDoc.pipe(fs.createWriteStream(invoicePath))
+
+        newPdfDoc.pipe(res);
+        newPdfDoc.fontSize(20).text('Capstone Project of Group 4', {
+            underline: true,
+            align: 'center',
+            width: 410,
+            lineGap: 10,
+        });
+        newPdfDoc.fontSize(15).text('Developed by @andreicastrodev', {
+            align: 'center',
+            width: 410,
+            lineGap: 10
+        });
+
+        newPdfDoc.fontSize(10).text('This contains the information about the service you selected, this also acknoledges that your schedule has been approved.');
+        newPdfDoc.fontSize(15).text('---------------------------------------------------------------------', {
+            width: 410,
+        })
+
+        const userName = schedule.userId.name;
+        const userEmail = schedule.userId.email;
+        newPdfDoc.fontSize(10).text(`Username: ${userName} `, {
+            width: 410,
+            lineGap: 5
+        })
+        newPdfDoc.fontSize(10).text(`Email: ${userEmail} `, {
+            width: 410,
+            lineGap: 5
+
+        })
+
+        newPdfDoc.fontSize(10).text(`Scheduled for: ${schedule.serviceId.title} `, {
+            width: 410,
+            lineGap: 5
+
+        })
+
+        newPdfDoc.fontSize(10).text(`Location: ${schedule.serviceId.location} `, {
+            width: 410,
+            lineGap: 5
+
+        })
+
+        newPdfDoc.fontSize(10).text(`Description: ${schedule.serviceId.description} `, {
+            width: 410,
+            lineGap: 5
+
+        })
+        newPdfDoc.fontSize(10).text(`Schedule Date: ${schedule.date} `, {
+            width: 410,
+            lineGap: 5
+
+        })
+        newPdfDoc.fontSize(10).text(`Status: ${schedule.status} `, {
+            width: 410,
+            lineGap: 5
+
+        })
+        newPdfDoc.fontSize(10).text(`Reference Code: ${schedule._id} `, {
+            width: 410,
+            lineGap: 5
+
+        })
+        newPdfDoc.fontSize(10).text(`Please print this or screenshot it for proof of your schedule at the barangay hall.`, {
+            width: 410,
+            align: 'center'
+        })
+        newPdfDoc.end();
+
+    } catch (error) {
+        const err = new Error(error);
+        err.httpStatusCode = 500;
+        return next(err);
+    }
+
+
 }
 
 exports.getVoteHistory = async (req, res, next) => {
