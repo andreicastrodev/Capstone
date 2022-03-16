@@ -98,9 +98,6 @@ exports.getServicesDetail = async (req, res, next) => {
 
 exports.getInquiry = (req, res, next) => {
 
-    if (!req.session.isLoggedIn) {
-        return res.redirect('/login');
-    }
     res.render('default/inquiry/inquiry', {
         pageTitle: 'Inquiry',
         path: '/',
@@ -113,9 +110,6 @@ exports.getInquiry = (req, res, next) => {
 }
 
 exports.getProfile = async (req, res, next) => {
-    if (!req.session.isLoggedIn) {
-        return res.redirect('/login');
-    }
 
     const userData = req.user;
     console.log(userData)
@@ -138,9 +132,6 @@ exports.getProfile = async (req, res, next) => {
 
 
 exports.getInquiryHistory = async (req, res, next) => {
-    if (!req.session.isLoggedIn) {
-        return res.redirect('/login');
-    }
     try {
 
         const inquiries = await Inquiry.find({ userId: req.user._id })
@@ -162,9 +153,6 @@ exports.getInquiryHistory = async (req, res, next) => {
 
 
 exports.getScheduleHistory = async (req, res, next) => {
-    if (!req.session.isLoggedIn) {
-        return res.redirect('/login');
-    }
     try {
         const schedules = await Schedule.find({ userId: req.user._id }).populate('serviceId');
         console.log(schedules);
@@ -195,9 +183,9 @@ exports.getScheduleInvoice = async (req, res, next) => {
         if (!schedule) {
             return next(new Error('no Schedule found'))
         }
-        // if (schedule.userId.toString() !== req.user._id.toString()) {
-        //     return next(new Error('Unauthorized'))
-        // }
+        if (schedule.userId._id.toString() !== req.user._id.toString()) {
+            return next(new Error('Unauthorized'))
+        }
         console.log(schedule)
         const newPdfDoc = new PDFDoc();
         res.setHeader('Content-type', 'application/pdf');
@@ -311,9 +299,6 @@ exports.getVoteHistory = async (req, res, next) => {
 
 
 exports.getSettings = async (req, res, next) => {
-    if (!req.session.isLoggedIn) {
-        return res.redirect('/login');
-    }
     const userDetails = req.user;
     return res.render('default/profile/profile-settings', {
         pageTitle: 'Settings',
@@ -324,9 +309,6 @@ exports.getSettings = async (req, res, next) => {
 }
 
 exports.getVotes = async (req, res, next) => {
-    if (!req.session.isLoggedIn) {
-        return res.redirect('/login');
-    }
 
     try {
         const votes = await Vote.find();
@@ -349,9 +331,6 @@ exports.getVotes = async (req, res, next) => {
 
 
 exports.getVotesDetails = async (req, res, next) => {
-    if (!req.session.isLoggedIn) {
-        return res.redirect('/login');
-    }
     const voteId = req.params.voteId;
     let alreadyVoted;
     try {
@@ -380,9 +359,6 @@ exports.getVotesDetails = async (req, res, next) => {
 
 
 exports.getVoteResults = async (req, res, next) => {
-    if (!req.session.isLoggedIn) {
-        return res.redirect('/login');
-    }
 
     return res.render('default/vote/vote-results', {
         pageTitle: 'Vote Results',

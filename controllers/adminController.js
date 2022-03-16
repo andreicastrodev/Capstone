@@ -22,9 +22,7 @@ const transporter = nodemailer.createTransport(
 
 
 exports.getIndex = async (req, res, next) => {
-    if (!req.session.adminIsLoggedIn) {
-        return res.redirect('/admin/login');
-    }
+
 
     try {
         const numberOfUsers = await User.countDocuments();
@@ -51,9 +49,7 @@ exports.getIndex = async (req, res, next) => {
 }
 
 exports.getCreateNews = (req, res, next) => {
-    if (!req.session.adminIsLoggedIn) {
-        return res.redirect('/admin/login');
-    }
+
     res.render('admin/news/create-news', {
         pageTitle: 'Create News',
         oldInput: {
@@ -65,9 +61,7 @@ exports.getCreateNews = (req, res, next) => {
 }
 
 exports.getManageNews = async (req, res, next) => {
-    if (!req.session.adminIsLoggedIn) {
-        return res.redirect('/admin/login');
-    }
+
 
 
     try {
@@ -90,9 +84,7 @@ exports.getManageNews = async (req, res, next) => {
 
 
 exports.getEditNews = async (req, res, next) => {
-    if (!req.session.adminIsLoggedIn) {
-        return res.redirect('/admin/login');
-    }
+
     const newsId = req.params.newsId;
 
     try {
@@ -113,9 +105,7 @@ exports.getEditNews = async (req, res, next) => {
 
 
 exports.getCreateService = (req, res, next) => {
-    if (!req.session.adminIsLoggedIn) {
-        return res.redirect('/admin/login');
-    }
+
     res.render('admin/services/create-service', {
         pageTitle: 'Create Service',
         oldInput: {
@@ -128,9 +118,7 @@ exports.getCreateService = (req, res, next) => {
 }
 
 exports.getManageService = async (req, res, next) => {
-    if (!req.session.adminIsLoggedIn) {
-        return res.redirect('/admin/login');
-    }
+
     try {
         const services = await Service.find();
         console.log(services)
@@ -149,9 +137,7 @@ exports.getManageService = async (req, res, next) => {
 
 
 exports.getEditService = async (req, res, next) => {
-    if (!req.session.adminIsLoggedIn) {
-        return res.redirect('/admin/login');
-    }
+
     const serveId = req.params.serviceId;
     try {
         const service = await Service.findById(serveId);
@@ -170,9 +156,7 @@ exports.getEditService = async (req, res, next) => {
 
 
 exports.getManageInquiry = async (req, res, next) => {
-    if (!req.session.adminIsLoggedIn) {
-        return res.redirect('/admin/login');
-    }
+
     try {
         const inquiries = await Inquiry.find().populate('userId')
         console.log(inquiries);
@@ -189,9 +173,7 @@ exports.getManageInquiry = async (req, res, next) => {
 
 
 exports.getManageSchedule = async (req, res, next) => {
-    if (!req.session.adminIsLoggedIn) {
-        return res.redirect('/admin/login');
-    }
+
     try {
         const schedules = await Schedule.find().populate('serviceId').populate('userId');
         console.log(schedules);
@@ -211,9 +193,7 @@ exports.getManageSchedule = async (req, res, next) => {
 
 
 exports.getManageUser = async (req, res, next) => {
-    if (!req.session.adminIsLoggedIn) {
-        return res.redirect('/admin/login');
-    }
+
     try {
         const users = await User.find();
         console.log(users);
@@ -230,9 +210,7 @@ exports.getManageUser = async (req, res, next) => {
 }
 
 exports.getManageVote = async (req, res, next) => {
-    if (!req.session.adminIsLoggedIn) {
-        return res.redirect('/admin/login');
-    }
+
     try {
         const voteData = await VoteData.find().populate('voteId');
 
@@ -454,9 +432,7 @@ exports.postDeleteService = async (req, res, next) => {
 
 
 exports.getCreateVote = (req, res, next) => {
-    if (!req.session.adminIsLoggedIn) {
-        return res.redirect('/admin/login');
-    }
+
     try {
         return res.render('admin/vote/create-vote', {
             pageTitle: 'Create Vote',
