@@ -197,7 +197,7 @@ exports.getManageUser = async (req, res, next) => {
     try {
         const users = await User.find();
         console.log(users);
-        res.render('admin/user/manage-user', {
+       return res.render('admin/user/manage-user', {
             pageTitle: 'Manage Users',
             users,
             path: '',
@@ -216,7 +216,7 @@ exports.getManageVote = async (req, res, next) => {
 
         console.log(voteData);
 
-        res.render('admin/vote/manage-vote', {
+        return res.render('admin/vote/manage-vote', {
             pageTitle: 'Manage Votes',
             voteData,
             path: '',

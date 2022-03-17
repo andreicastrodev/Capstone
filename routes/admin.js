@@ -16,7 +16,7 @@ router.get('/vote-history', adminIsAuth.adminIsAuth, adminController.getVoteHist
 router.get('/manage-inquiry', adminIsAuth.adminIsAuth, adminController.getManageInquiry);
 router.get('/manage-schedule', adminIsAuth.adminIsAuth, adminController.getManageSchedule);
 router.get('/manage-user', adminIsAuth.adminIsAuth, adminController.getManageUser);
-router.get('/manage-vote ', adminIsAuth.adminIsAuth, adminController.getManageVote);
+router.get('/manage-vote', adminIsAuth.adminIsAuth, adminController.getManageVote);
 router.get('/admin-settings', adminIsAuth.adminIsAuth, adminController.getAdminSettings);
 router.post('/update-settings', adminIsAuth.adminIsAuth, adminController.postAdminSettings);
 router.post('/create-news', adminIsAuth.adminIsAuth, validators.validateNews, adminController.postCreateNews);

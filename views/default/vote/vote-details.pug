@@ -21,17 +21,14 @@ main
               .form__radio-group
                 input#vote1.form__radio-input(type='radio' value="0" name='vote')
                 label.form__radio-label(for='vote1')
-                  span.form__radio-button
                   =  vote.choices[0]
               .form__radio-group
                 input#vote2.form__radio-input(type='radio' value="1" name='vote')
                 label.form__radio-label(for='vote2')
-                  span.form__radio-button
                   = vote.choices[1]
               .form__radio-group
                 input#vote3.form__radio-input(type='radio' value="2" name='vote')
                 label.form__radio-label(for='vote3')
-                  span.form__radio-button
                   = vote.choices[2]
             .form__group
               input(type="hidden" name="voteId" value=`${vote._id}`)
