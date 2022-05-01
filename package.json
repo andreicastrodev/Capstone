@@ -71,6 +71,7 @@
     "ti-icons": "^0.1.2",
     "tinymce": "^5.0.8",
     "twbs-pagination": "1.4.1",
+    "twilio": "^3.76.1",
     "typeahead.js": "^0.11.1",
     "x-editable": "^1.5.1"
   },

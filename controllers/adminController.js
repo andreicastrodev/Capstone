@@ -7,17 +7,20 @@ const VoteData = require('../models/voteData');
 const News = require('../models/news');
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
-const sendgridTransport = require('nodemailer-sendgrid-transport');
 const mongoose = require('mongoose');
 const { validationResult } = require('express-validator/check');
-
+const twilio = require('twilio')
 const transporter = nodemailer.createTransport(
-    sendgridTransport({
+    {
+        service: 'gmail',
         auth: {
-            api_key: "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"
+            user: 'andreinichol.e.castro.dev@gmail.com',
+            pass: 'plduujqdtidiefgw'
+
         }
-    })
-);
+    });
+
+
 
 
 
@@ -197,7 +200,7 @@ exports.getManageUser = async (req, res, next) => {
     try {
         const users = await User.find();
         console.log(users);
-       return res.render('admin/user/manage-user', {
+        return res.render('admin/user/manage-user', {
             pageTitle: 'Manage Users',
             users,
             path: '',
@@ -545,15 +548,39 @@ exports.postReadInquiry = async (req, res, next) => {
         inquiry.status = 'Read';
         await inquiry.save();
         console.log('INQUIRY READ');
-        transporter.sendMail({
+        const body = 'We have read your concern about this certain topic, we will email/text you again if we confirmed it'
+        // transporter.sendMail({
+        //     to: inquiry.userId.email,
+        //     from: 'andreinichol.e.castro.dev@gmail.com',
+        //     subject: 'About your Inquiry',
+        //     html: `
+        //       <p>Good day!</p>
+        //       <p>${body}</p>
+        //     `
+        // });
+
+        const mailOptions = {
             to: inquiry.userId.email,
             from: 'andreinichol.e.castro.dev@gmail.com',
             subject: 'About your Inquiry',
-            html: `
-              <p>Good day!</p>
-              <p>We have read your concern about this certain topic, we will email you again if we confirmed it.</p>
-            `
-        });
+            text: `Good day! ${body}`
+
+        }
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log(error)
+
+            }
+        })
+        // mobile number can only be sent through an authorized mobile number because of trial account
+        const client = new twilio('AC3cdf2008e2d3331e5527db84554fe00f', 'de6631d892aeae3c29a00d17a33d9bbd');
+        client.messages.create({
+            to: '+639164948992',
+            from: "+16203128359",
+            body: `Good Day! ${body}`
+        })
+
         return res.redirect('/admin/manage-inquiry');
 
     } catch (error) {

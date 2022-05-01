@@ -499,7 +499,7 @@ exports.postInquiry = async (req, res, next) => {
         await inquiry.save();
         const result = await req.user.addInquiry(inquiry);
         console.log(result);
-        return res.redirect('/');
+        return res.redirect('/profile/inquiry-history');
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
