@@ -20,6 +20,6 @@ router.get('/votes/:voteId', defaultIsAuth.defaultIsAuth, defaultController.getV
 router.get('/vote/vote-results', defaultIsAuth.defaultIsAuth, defaultController.getVoteResults);
 router.post('/vote/voted', defaultIsAuth.defaultIsAuth, defaultController.postVoted);
 router.post('/inquiry', defaultIsAuth.defaultIsAuth, validators.validateInquiry, defaultController.postInquiry);
-router.post('/service-schedule', defaultIsAuth.defaultIsAuth, defaultController.postServiceSchedule);
+router.post('/service-schedule', defaultIsAuth.defaultIsAuth,validators.validateSchedule, defaultController.postServiceSchedule );
 router.post('/profile/update-settings', defaultIsAuth.defaultIsAuth, defaultController.postSettings);
 module.exports = router;

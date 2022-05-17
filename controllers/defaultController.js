@@ -508,9 +508,21 @@ exports.postInquiry = async (req, res, next) => {
 }
 
 exports.postServiceSchedule = async (req, res, next) => {
+    const errors = validationResult(req);
+    const serviceId = mongoose.Types.ObjectId(req.body.serviceId);
+
+    console.log(req.body.date)
+    // if (req.body.date === null) {
+    //     return res.status(422).redirect(`service/serviceDetail/${serviceId}`)
+    // }
 
     const date = req.body.date;
-    const serviceId = mongoose.Types.ObjectId(req.body.serviceId);
+
+    if (!errors.isEmpty()) {
+        console.log(errors.array());
+        const queryString = 'Please select a date!'
+        return res.status(422).redirect(`services/${serviceId}/?data=${queryString}`)
+    }
 
     const schedule = new Schedule({
         date,

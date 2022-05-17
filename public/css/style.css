@@ -387,11 +387,11 @@ body {
 }
 
 .u-margin-bottom-medium {
-  margin-bottom: 4rem !important;
+  margin-bottom: 3rem !important;
 }
 @media only screen and (max-width: 56.25em) {
   .u-margin-bottom-medium {
-    margin-bottom: 3rem !important;
+    margin-bottom: 2rem !important;
   }
 }
 

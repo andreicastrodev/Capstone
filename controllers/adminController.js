@@ -21,9 +21,6 @@ const transporter = nodemailer.createTransport(
     });
 
 
-
-
-
 exports.getIndex = async (req, res, next) => {
 
 
@@ -530,8 +527,36 @@ exports.postCreateVote = async (req, res, next) => {
 exports.postDeleteInquiry = async (req, res, next) => {
     const inquiryId = req.body.inquiryId;
     try {
+        const inquiry = await Inquiry.findById(inquiryId).populate('userId');
+        const body = 'Your shedule has been cancelled, your inquiry cannot be processed at this moment.'
+
+
+
+        const mailOptions = {
+            to: inquiry.userId.email,
+            from: 'andreinichol.e.castro.dev@gmail.com',
+            subject: 'About your Inquiry',
+            text: `Good day! ${body}`
+
+        }
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log(error)
+
+            }
+        })
+        // mobile number can only be sent through an authorized mobile number because of trial account
+        const client = new twilio('AC3cdf2008e2d3331e5527db84554fe00f', 'de6631d892aeae3c29a00d17a33d9bbd');
+        client.messages.create({
+            to: '+639166981247',
+            from: "+16203128359",
+            body: `Good Day! ${body}`
+        })
+
         await Inquiry.deleteOne({ _id: inquiryId });
         await req.user.removeInquiry(inquiryId);
+
         console.log('INQUIRY DELETED');
         return res.redirect('/admin/manage-inquiry');
     } catch (error) {
@@ -576,7 +601,7 @@ exports.postReadInquiry = async (req, res, next) => {
         // mobile number can only be sent through an authorized mobile number because of trial account
         const client = new twilio('AC3cdf2008e2d3331e5527db84554fe00f', 'de6631d892aeae3c29a00d17a33d9bbd');
         client.messages.create({
-            to: '+639164948992',
+            to: '+639166981247',
             from: "+16203128359",
             body: `Good Day! ${body}`
         })
@@ -600,15 +625,34 @@ exports.postConfirmSchedule = async (req, res, next) => {
         schedule.status = 'Confirmed';
         await schedule.save();
         console.log('SCHEDULE CONFIRMED');
-        transporter.sendMail({
+
+
+        const body = `Your shedule has been approved,
+         please view your schedule details on your schedule history at your profile,
+         there will be a detailed overview invoice that you can read.
+        `
+        const mailOptions = {
             to: schedule.userId.email,
             from: 'andreinichol.e.castro.dev@gmail.com',
-            subject: 'Confirmation Of Schedule',
-            html: `
-              <p>Good day!</p>
-              <p>Your shedule has been approved, please go to the barangay at 12pm nooon of 24th.</p>
-            `
-        });
+            subject: 'About your Schedule',
+            text: `Good day! ${body}`
+
+        }
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log(error)
+
+            }
+        })
+        // mobile number can only be sent through an authorized mobile number because of trial account
+        const client = new twilio('AC3cdf2008e2d3331e5527db84554fe00f', 'de6631d892aeae3c29a00d17a33d9bbd');
+        client.messages.create({
+            to: '+639166981247',
+            from: "+16203128359",
+            body: `Good Day! ${body}`
+        })
+
         return res.redirect('/admin/manage-schedule');
     } catch (error) {
         const err = new Error(error);
@@ -620,21 +664,37 @@ exports.postConfirmSchedule = async (req, res, next) => {
 
 exports.postCancelSchedule = async (req, res, next) => {
     const scheduleId = req.body.scheduleId
-
+    const body = 'Your shedule has been cancelled, your schedule cannot be processed because we are fully booked, please schedule on a different date.'
     try {
         const schedule = await Schedule.findById(scheduleId).populate('userId')
         schedule.status = 'Cancelled';
         await schedule.save();
         console.log('SCHEDULE Cancelled');
-        transporter.sendMail({
+
+
+
+        const mailOptions = {
             to: schedule.userId.email,
             from: 'andreinichol.e.castro.dev@gmail.com',
-            subject: 'Cancelation Of Schedule',
-            html: `
-              <p>Good day!</p>
-              <p>Your shedule has been cancelled, your schedule cannot be processed because we are fully booked, please schedule on a different date.</p>
-            `
-        });
+            subject: 'About your Schedule',
+            text: `Good day! ${body}`
+
+        }
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log(error)
+
+            }
+        })
+        // mobile number can only be sent through an authorized mobile number because of trial account
+        const client = new twilio('AC3cdf2008e2d3331e5527db84554fe00f', 'de6631d892aeae3c29a00d17a33d9bbd');
+        client.messages.create({
+            to: '+639166981247',
+            from: "+16203128359",
+            body: `Good Day! ${body}`
+        })
+
         return res.redirect('/admin/manage-schedule');
     } catch (error) {
         const err = new Error(error);

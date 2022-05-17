@@ -6,6 +6,9 @@ head
   link(rel='stylesheet' href='/css/style-1.css')
   title=pageTitle
 include ../../includes/navigation-bar.pug
+
+- var currentDate = new Date().toISOString().split('T')[0];
+
 section.section-header
   .header__hero
     .header__hero-overlay &nbsp;
@@ -33,7 +36,7 @@ section.section-description
         .overview-box__detail
           form(action="/service-schedule", method="POST")
             label.overview-box__label Date
-            input(type="date", name="date")
+            input(type="date", min=`${currentDate}`, name="date")
             input(type="hidden" value=`${service._id}`, name="serviceId")
             button.btn.btn--green.span-all-rows(type="submit") Schedule now!
 

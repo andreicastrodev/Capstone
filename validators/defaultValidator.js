@@ -7,3 +7,8 @@ exports.validateInquiry = [
     check('message', 'Message must be longer than 20 characters')
         .isLength({ min: 20 })
 ]
+
+exports.validateSchedule = [
+    check('date', 'Select a date!')
+        .isDate().trim()
+]
