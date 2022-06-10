@@ -77,8 +77,9 @@ userSchema.methods.addSchedule = function (schedule) {
 }
 
 
-userSchema.methods.addVote = function (vote, selectedVote,date) {
+userSchema.methods.addVote = function (vote, selectedVote, date) {
   const updatedVotes = [...this.data.vote];
+  console.log('this is the updated votes');
 
   updatedVotes.push({
     voteDataId: vote._id,

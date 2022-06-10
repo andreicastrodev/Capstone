@@ -379,6 +379,7 @@ exports.postVoted = async (req, res, next) => {
     const [voteDetails] = await Vote.find(voteId);
     try {
         if (existingVote) {
+            console.log('vote alrady exist')
             if (+req.body.vote === 0) {
                 vote = +req.body.vote;
                 selectedVote = +req.body.vote;
@@ -395,7 +396,7 @@ exports.postVoted = async (req, res, next) => {
             existingVote.votees.push(req.user._id);
             const results = await existingVote.save();
             const existingUserVote = results.votees.find(user => user.toString() === req.user._id.toString());
-            if (!existingUserVote) await req.user.addVote(voteDetails, selectedVote, date);
+            if (existingUserVote) await req.user.addVote(voteDetails, selectedVote, date);
 
             return res.render('default/vote/vote-results', {
                 pageTitle: 'Vote Results',
@@ -404,7 +405,7 @@ exports.postVoted = async (req, res, next) => {
                 isAuth: req.session.isLoggedIn
             })
         } else {
-
+            console.log('vote doesnt exist')
             if (+req.body.vote === 0) {
                 vote = +req.body.vote;
                 selectedVote = +req.body.vote;

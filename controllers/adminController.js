@@ -451,10 +451,9 @@ exports.getCreateVote = (req, res, next) => {
         return next(err);
     }
 }
-
 exports.getVoteHistory = async (req, res, next) => {
     try {
-        const [votes] = await User.find()
+        const votes = await User.find()
             .populate({
                 path: 'data',
                 populate: {
@@ -465,13 +464,11 @@ exports.getVoteHistory = async (req, res, next) => {
                     }
                 }
             })
-        const voteData = votes.data.vote;
-        const userData = votes;
-        console.log(userData);
+
+        console.log(votes[0].data)
         return res.render('admin/vote/vote-history', {
             pageTitle: 'Vote History',
-            votes: voteData,
-            userData,
+            votes: votes,
             path: '/',
             isAuth: req.session.isLoggedIn
         })
@@ -481,7 +478,6 @@ exports.getVoteHistory = async (req, res, next) => {
         return next(err);
     }
 }
-
 
 
 exports.postCreateVote = async (req, res, next) => {
@@ -516,7 +512,7 @@ exports.postCreateVote = async (req, res, next) => {
     try {
         const result = await vote.save();
         console.log('VOTE CREATED', result);
-        return res.redirect('/admin/vote/manage-vote');
+        return res.redirect('/admin/manage-vote')
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
@@ -722,7 +718,8 @@ exports.postDeleteSchedule = async (req, res, next) => {
 
 exports.postViewVote = async (req, res, next) => {
     const voteDataId = req.body.voteDataId
-    const [voteData] = await VoteData.find(mongoose.Types.ObjectId(voteDataId)).populate('voteId');
+    console.log(voteDataId)
+    const voteData = await VoteData.findById(voteDataId).populate('voteId');
     console.log(voteData)
     return res.render('default/vote/vote-results', {
         pageTitle: 'Vote Results',

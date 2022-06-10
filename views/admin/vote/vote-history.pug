@@ -12,7 +12,10 @@ include ../../includes/admin/admin-head.pug
               .card-body
                 h4.card-title Vote History
                 .table-responsive
-                  each vote in votes
+                if votes.length === 0
+                 h4.dataMessage Vote History is empty
+                else 
+                  each vote, index in votes
                     table.table.table-striped
                       thead
                         tr
@@ -22,10 +25,10 @@ include ../../includes/admin/admin-head.pug
                           th Date
                         tbody
                           tr
-                            td= userData.name
-                            td= vote.voteDataId.title                               
-                            td= vote.voteDataId.choices[vote.selectedVote]
-                            td= vote.date
+                            td= vote.name
+                            td= vote.data.vote[0].voteDataId.title                               
+                            td= vote.data.vote[0].voteDataId.choices[vote.data.vote[0].selectedVote]
+                            td= vote.data.vote[0].date
 
             
 
