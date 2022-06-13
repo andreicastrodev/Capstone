@@ -524,7 +524,7 @@ exports.postDeleteInquiry = async (req, res, next) => {
     const inquiryId = req.body.inquiryId;
     try {
         const inquiry = await Inquiry.findById(inquiryId).populate('userId');
-        const body = 'Your shedule has been cancelled, your inquiry cannot be processed at this moment.'
+        const body = 'Your Inquiry has been deleted, Your Inquiry cannot be processed at this moment.'
 
 
 
@@ -625,7 +625,7 @@ exports.postConfirmSchedule = async (req, res, next) => {
 
         const body = `Your shedule has been approved,
          please view your schedule details on your schedule history at your profile,
-         there will be a detailed overview invoice that you can read.
+         there will be a detailed invoice that you can read.
         `
         const mailOptions = {
             to: schedule.userId.email,
@@ -660,7 +660,9 @@ exports.postConfirmSchedule = async (req, res, next) => {
 
 exports.postCancelSchedule = async (req, res, next) => {
     const scheduleId = req.body.scheduleId
-    const body = 'Your shedule has been cancelled, your schedule cannot be processed because we are fully booked, please schedule on a different date.'
+    const body = `Your shedule has been cancelled, your schedule cannot be processed 
+                  because we are fully booked or there is a problem on the system
+                , please schedule on a different date.`
     try {
         const schedule = await Schedule.findById(scheduleId).populate('userId')
         schedule.status = 'Cancelled';

@@ -29,32 +29,17 @@ section.section-header
 section.section-description
   .overview-box
     div
-      .overview-box__group
+      .description-box
         h2.heading-secondary.ma-bt-lg Select your prefered date for your schedule!
+        p.description__text Lorem ipsum dolor sit amet, consectetur adipiscing elit. In cursus eget ipsum non pretium. Quisque imperdiet molestie mi sit amet pulvinar. Nullam sed elit aliquam, cursus libero at, elementum magna. Aliquam cursus orci nisi. Phasellus luctus
         if (errorMessage)
           div(class="user-message user-message--error")= errorMessage
         .overview-box__detail
-          form(action="/service-schedule", method="POST")
+          form(action="/service-schedule", method="POST" class="form_scheduleDate")
             label.overview-box__label Date
-            input(type="date", min=`${currentDate}`, name="date")
-            input(type="hidden" value=`${service._id}`, name="serviceId")
-            button.btn.btn--green.span-all-rows(type="submit") Schedule now!
-
-        .overview-box__detail
-          svg.overview-box__icon
-            use(xlink:href='img/icons.svg#icon-trending-up')
-        //-   span.overview-box__label Difficulty
-        //-   span.overview-box__text Medium
-        .overview-box__detail
-          svg.overview-box__icon
-            use(xlink:href='img/icons.svg#icon-user')
-        //-   span.overview-box__label Participants
-        //-   span.overview-box__text 10 people
-        .overview-box__detail
-          svg.overview-box__icon
-            use(xlink:href='img/icons.svg#icon-star')
-        //-   span.overview-box__label Rating
-        //-   span.overview-box__text 4.9 / 5
+            input.mt-top-med(type="date", min=`${currentDate}`, name="date")
+            input.mt-top-med(type="hidden" value=`${service._id}`, name="serviceId")
+            button.mt-top-med.btn.btn--green.span-all-rows(type="submit") Schedule now!
   .description-box
     h2.heading-secondary.ma-bt-lg About the service
     p.description__text= service.description
