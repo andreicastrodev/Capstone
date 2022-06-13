@@ -17,7 +17,7 @@ header.header
 
     a.btn.btn--white.btn--animated(href='/services') View all Services
 main
-  section.section-about
+  section.section-news
     .u-center-text.u-margin-bottom-big
       h2.heading-secondary
         | Latest News
@@ -28,6 +28,28 @@ main
             h3.heading-tertiary.u-margin-bottom-small= news.title
             a.btn-text(href=`/news/${news._id}`) Learn more &rarr;
 
+
+section.section-about
+  .u-center-text.u-margin-bottom-big
+    h2.heading-secondary
+      | Web app to make your Barangay queries hassle free!
+  .row
+    .col-1-of-2
+      h3.heading-tertiary.u-margin-bottom-small Built in E-Inquiry System with email and sms notification
+      p.paragraph
+        | Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam, ipsum sapiente aspernatur libero repellat quis consequatur
+        | ducimus quam nisi exercitationem omnis earum qui.
+      h3.heading-tertiary.u-margin-bottom-small Scheduling system, no more waiting for your applications!
+      p.paragraph
+        | Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores nulla deserunt voluptatum nam.
+      h3.heading-tertiary.u-margin-bottom-small All new voting system for the projects the barangay can implement on a certain month
+      p.paragraph
+        | Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores nulla deserunt voluptatum nam.
+    .col-1-of-2
+      .composition
+        img.composition__photo.composition__photo--p1(srcset='img/inquiry.png' )
+        img.composition__photo.composition__photo--p2(srcset='img/schedule.png' )
+        img.composition__photo.composition__photo--p3(srcset='img/voting.png')
   section.section-features
     .row
       .col-1-of-4
@@ -121,7 +143,7 @@ main
         |                         Your browser is not supported!
     .u-center-text.u-margin-bottom-big
       h2.heading-secondary
-        | Our Barangay make people happy!
+        | Our Barangay makes people happy!
     .row
       .story
         .story__text
@@ -142,70 +164,8 @@ main
     .u-center-text.u-margin-top-huge
     //-   a.btn-text(href='#') Read all stories &rarr;
 footer.footer
-
   .row
-    .col-3-of-4
-      p.footer__copyright andreicastrodev@github.com  / developed for capstone 2
-//
-  <section class="grid-test">
-  <div class="row">
-  <div class="col-1-of-2">
-  Col 1 of 2
-  </div>
-  <div class="col-1-of-2">
-  Col 1 of 2
-  </div>
-  </div>
-  <div class="row">
-  <div class="col-1-of-3">
-  Col 1 of 3
-  </div>
-  <div class="col-1-of-3">
-  Col 1 of 3
-  </div>
-  <div class="col-1-of-3">
-  Col 1 of 3
-  </div>
-  </div>
-  <div class="row">
-  <div class="col-1-of-3">
-  Col 1 of 3
-  </div>
-  <div class="col-2-of-3">
-  Col 2 of 3
-  </div>
-  </div>
-  <div class="row">
-  <div class="col-1-of-4">
-  Col 1 of 4
-  </div>
-  <div class="col-1-of-4">
-  Col 1 of 4
-  </div>
-  <div class="col-1-of-4">
-  Col 1 of 4
-  </div>
-  <div class="col-1-of-4">
-  Col 1 of 4
-  </div>
-  </div>
-  <div class="row">
-  <div class="col-1-of-4">
-  Col 1 of 4
-  </div>
-  <div class="col-1-of-4">
-  Col 1 of 4
-  </div>
-  <div class="col-2-of-4">
-  Col 2 of 4
-  </div>
-  </div>
-  <div class="row">
-  <div class="col-1-of-4">
-  Col 1 of 4
-  </div>
-  <div class="col-3-of-4">
-  Col 3 of 4
-  </div>
-  </div>
-  </section>
+    .col-1-of-2
+      p.footer__copyright andreicastrodev@github.com  
+    .col-1-of-2
+      p.footer__copyright developed for Capstone 2
