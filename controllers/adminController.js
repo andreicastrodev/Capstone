@@ -176,7 +176,7 @@ exports.getManageSchedule = async (req, res, next) => {
 
     try {
         const schedules = await Schedule.find().populate('serviceId').populate('userId');
-        console.log(schedules);
+        console.log('this is the schedules',schedules);
 
         return res.render('admin/schedule/manage-schedule', {
             pageTitle: 'Schedule History',
@@ -363,7 +363,7 @@ exports.postCreateService = async (req, res, next) => {
 
     console.log(image)
     if (!image) {
-        return res.redirect('/admin/dashboard');
+        return res.redirect('/admin/manage-service');
     }
     const imageUrl = image.path;
 

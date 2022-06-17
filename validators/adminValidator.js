@@ -34,8 +34,6 @@ exports.validateServices = [
     check('title', 'Please enter a title with characters greater than 5')
         .not().isEmpty().withMessage("Title is required!")
         .isLength({ min: 5 }),
-    check('image')
-        .not().isEmpty().withMessage("Image is required"),
     check('location')
         .not().isEmpty().withMessage("Location is required")
         .isLength({ min: 5 }).withMessage('Please enter a location with more than 5 characters'),

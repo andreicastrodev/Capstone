@@ -42,13 +42,13 @@ exports.getAdminSignup = (req, res, next) => {
 }
 
 exports.postAdminSignup = async (req, res, next) => {
-  const email = req.body.email;
+  const username = req.body.text;
   const password = req.body.password;
 
   try {
     const hashedPassword = await bcrypt.hash(password, 12);
     const adminAccount = new Admin({
-      email,
+      username,
       password: hashedPassword
     })
     const result = await adminAccount.save();
@@ -149,11 +149,11 @@ exports.postLogin = async (req, res, next) => {
 
 
 exports.postAdminLogin = async (req, res, next) => {
-  const email = req.body.email;
+  const username = req.body.text;
   const password = req.body.password;
 
   try {
-    const admin = await Admin.findOne({ email: email })
+    const admin = await Admin.findOne({ username: username })
     if (!admin) {
       return res.redirect('/admin/login')
     }

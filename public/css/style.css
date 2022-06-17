@@ -1414,7 +1414,7 @@ body {
 
 .section-news {
   background-color: #f7f7f7;
-  padding: 25rem 0;
+  padding: 25rem 15rem 0;
   margin-top: -10vh;
 }
 @media only screen and (max-width: 56.25em) {
@@ -1538,4 +1538,9 @@ body {
   max-width: 60rem;
   margin: 0 auto;
   margin-top: 10rem;
+}
+
+
+.helper-font-med{
+  font-size: 2rem;
 }

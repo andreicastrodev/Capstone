@@ -22,11 +22,10 @@ main.main
             =`${service.description.substring(0, 250)}`
         .card__data
           svg.card__icon
-            use(xlink:href='img/icons.svg#icon-map-pin')
           span= service.location
         .card__data
           svg.card__icon
-            use(xlink:href='img/icons.svg#icon-calendar')
           span Barangay 20
       .card__footer
         a.btn.btn--green.btn--small(href=`/services/${service._id}`) Details
+        

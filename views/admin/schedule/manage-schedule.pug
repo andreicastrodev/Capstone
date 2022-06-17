@@ -34,7 +34,7 @@ include ../../includes/admin/admin-head.pug
                             td
                              form(action="/admin/manage-schedule/confirm-schedule",method="POST")
                                 input(type="hidden", value=`${schedule._id}`, name="scheduleId")
-                                button.btn.btn-danger(type='submit', ) Confirm 
+                                button.btn.btn-dark(type='submit', ) Confirm 
                             td
                              form(action="/admin/manage-schedule/cancel-schedule",method="POST")
                                 input(type="hidden", value=`${schedule._id}`, name="scheduleId")

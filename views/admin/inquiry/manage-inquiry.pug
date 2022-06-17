@@ -38,10 +38,10 @@ include ../../includes/admin/admin-head.pug
                             td
                              if inquiry.status === "Read"                        
                               a(href=`#popup${index}`)                            
-                               button.btn.btn-danger(disabled) View 
+                               button.btn.btn-dark(disabled) View 
                              else 
                               a(href=`#popup${index}`)                            
-                               button.btn.btn-danger View 
+                               button.btn.btn-dark View 
                             td
                              form(action="/admin/delete-inquiry",method="POST")
                                 input(type="hidden", value=`${inquiry._id}`, name="inquiryId")

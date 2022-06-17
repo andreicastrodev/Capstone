@@ -26,7 +26,7 @@ include ../../includes/profile/profile-head.pug
                         tbody
                           tr
                             td= inquiry.subject                               
-                            td= inquiry.message
+                            td= inquiry.message.substring(0,45)
                             td= inquiry.date
                             td= inquiry.status
             
